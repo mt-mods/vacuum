@@ -10,6 +10,7 @@ dofile(MP.."/vacuum.lua")
 dofile(MP.."/airpump.lua")
 dofile(MP.."/mapgen.lua")
 dofile(MP.."/abm.lua")
+dofile(MP.."/dignode.lua")
 
 print("[OK] Vacuum")
 
