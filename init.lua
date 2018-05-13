@@ -1,5 +1,13 @@
 
+vacuum = {
+	space_height = 100
+}
 
+minetest.register_node("vacuum:pump", {
+	description = "Vacuum pump",
+	tiles = {"vacuum_pump.png"},
+	paramtype = "light"
+})
 minetest.register_node("vacuum:vacuum", {
 	description = "Vacuum",
 	walkable = false,
@@ -12,15 +20,42 @@ minetest.register_node("vacuum:vacuum", {
 	alpha = 0.1,
 	groups = {not_in_creative_inventory=0},
 	paramtype = "light",
-	sunlight_propagates =true,
+	sunlight_propagates = true,
 })
+
+
+
+minetest.register_abm{
+        label = "space vacuum pump",
+	nodenames = {"vacuum:pump"},
+	neighbors = {"vacuum:vacuum"},
+	interval = 1,
+	chance = 1,
+	action = function(pos)
+		minetest.set_node(pos, {name = "air"})
+	end,
+}
+minetest.register_abm{
+        label = "space vacuum",
+	nodenames = {"default:air"},
+	neighbors = {"vacuum:vacuum"},
+	interval = 1,
+	chance = 1,
+	action = function(pos)
+		if pos.y < vacuum.space_height + 100 then
+			return
+		end
+
+		minetest.set_node(pos, {name = "vacuum:vacuum"})
+	end,
+}
 
 local c_vacuum = minetest.get_content_id("vacuum:vacuum")
 local c_air = minetest.get_content_id("air")
 
 minetest.register_on_generated(function(minp, maxp, seed)
 
-	if minp.y < 100 then
+	if minp.y < vacuum.space_height then
 		return
 	end
 
