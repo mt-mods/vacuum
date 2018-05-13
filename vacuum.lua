@@ -14,18 +14,3 @@ minetest.register_node("vacuum:vacuum", {
 	paramtype = "light",
 	sunlight_propagates = true
 })
-
-minetest.register_node("vacuum:generated_air", {
-	description = "Generated air",
-	walkable = false,
-	pointable = false,
-	diggable = false,
-	buildable_to = true,
-	drawtype = "glasslike",
-	-- post_effect_color = {a = 20, r = 220, g = 200, b = 200},
-	tiles = {"vacuum_texture.png^[colorize:#E0E0E033"},
-	groups = {not_in_creative_inventory=0},
-	paramtype = "light",
-	sunlight_propagates = true
-})
-
