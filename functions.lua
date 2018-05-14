@@ -18,7 +18,7 @@ local player_breath = function(player)
 					stack:add_wear(65535/(60-1))
 					did_breathe = true
 
-					if stack:get_wear() >= 65535 then
+					if stack:get_wear() >= 65535 or stack:is_empty() then
 						-- air depleted, replace with empty bottle
 						stack = ItemStack("vacuum:airbottle_empty 1")
 						if inv:room_for_item("main", stack) then
