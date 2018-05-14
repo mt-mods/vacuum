@@ -6,3 +6,5 @@ minetest.register_node("vacuum:airpump", {
 	groups = {cracky=3,oddly_breakable_by_hand=3},
 	sounds = default.node_sound_glass_defaults()
 })
+
+-- TODO: vacuum pump

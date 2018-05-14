@@ -29,9 +29,11 @@ minetest.register_abm({
 	chance = 1,
 	action = function(pos)
 		if pos.y < vacuum.space_height + 40 then
+			-- on earth: TODO: replace vacuum with air
 			return
 		end
 
+		-- in space: replace air with vacuum
 		local node = minetest.find_node_near(pos, 1, {"air"})
 
 		if node ~= nil then
