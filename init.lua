@@ -1,6 +1,6 @@
 
 vacuum = {
-	space_height = 100
+	space_height = 1000
 }
 
 
