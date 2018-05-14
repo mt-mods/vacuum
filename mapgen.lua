@@ -10,15 +10,13 @@ minetest.register_on_generated(function(minp, maxp, seed)
 
 	local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
 	local data = vm:get_data()
-	local area = VoxelArea:new{MinEdge=emin, MaxEdge=emax}
-	local count = 0
+	local area = VoxelArea:new({MinEdge=emin, MaxEdge=emax})
 
 	for i in area:iter(
 		minp.x, minp.y, minp.z,
 		maxp.x, maxp.y, maxp.z
 	) do
 		if data[i] == c_air then
-			count = count + 1
 			data[i] = c_vacuum
 		end
 	end

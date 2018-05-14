@@ -17,6 +17,30 @@ minetest.register_abm({
 	end
 })
 
+local depressurizable_nodes = {
+	"group:door", "group:wool"
+}
+
+minetest.register_abm({
+        label = "space vacuum depressurize",
+	nodenames = depressurizable_nodes,
+	neighbors = {"vacuum:vacuum"},
+	interval = 5,
+	chance = 1,
+	action = function(pos)
+		if pos.y < vacuum.space_height + 40 then
+			return
+		end
+
+		local node = minetest.find_node_near(pos, 1, {"air"})
+
+		if node ~= nil then
+			print("depressurizing @ " .. pos.x .. "/" .. pos.z)
+			minetest.set_node(node, {name = "vacuum:vacuum"})
+		end
+	end
+})
+
 function pressurize(pos, i)
 	-- search for existing air
 	local node = minetest.find_node_near(pos, 1, {"vacuum:vacuum"})
@@ -30,10 +54,11 @@ end
 minetest.register_abm({
         label = "space air pump",
 	nodenames = {"vacuum:airpump"},
+	neighbors = {"vacuum:vacuum"},
 	interval = 1,
 	chance = 1,
 	action = function(pos)
-		pressurize(pos, 20)
+		pressurize(pos, 30)
 	end
 })
 
