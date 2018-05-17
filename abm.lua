@@ -53,10 +53,14 @@ minetest.register_abm({
 	action = function(pos)
 		if not is_pos_in_space(pos) then
 			-- not in space
-			return
-		end
+			local node = minetest.find_node_near(pos, 1, {"vacuum:vacuum"})
 
-		minetest.set_node(pos, {name = "vacuum:vacuum"})
+			if node ~= nil then
+				minetest.set_node(node, {name = "air"})
+			end
+		else
+			minetest.set_node(pos, {name = "vacuum:vacuum"})
+		end
 	end
 })
 
