@@ -1,6 +1,7 @@
 
 vacuum = {
-	space_height = 1000
+	space_height = 1000,
+	air_pump_range = 8
 }
 
 
