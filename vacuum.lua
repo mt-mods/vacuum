@@ -7,6 +7,7 @@ minetest.register_node("vacuum:vacuum", {
 	diggable = false,
 	buildable_to = true,
 	drawtype = "glasslike",
+	drowning = 1,
 	post_effect_color = {a = 20, r = 20, g = 20, b = 250},
 	tiles = {"vacuum_texture.png^[colorize:#E0E0E033"},
 	alpha = 0.1,
