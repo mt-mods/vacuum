@@ -38,11 +38,14 @@ minetest.register_abm({
 	interval = 3,
 	chance = 1,
 	action = function(pos)
-		-- TODO: check if enabled
-		-- TODO: check height?
-		minetest.after(0, function()
-			pressurize(pos, 30)
-		end)
+		local meta = minetest.get_meta(pos)
+		local state = meta:get_int("state") == 1
+
+		if state then
+			minetest.after(0, function()
+				pressurize(pos, 30)
+			end)
+		end
 	end
 })
 
