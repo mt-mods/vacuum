@@ -1,7 +1,9 @@
 
 
 local leaky_nodes = {
-	"group:door", "group:wool", "group:wood", "group:tree", "group:soil"
+	"group:door", "group:wool", "group:wood",
+	"group:tree", "group:soil", "group:pipe",
+	"group:technic_lv_cable", "group:technic_mv_cable", "group:technic_hv_cable"
 }
 
 -- returns true, if in space (with safety margin for abm)
