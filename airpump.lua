@@ -66,6 +66,8 @@ minetest.register_node("vacuum:airpump", {
 				meta:set_int("enabled", 1)
 			end
 		end
+
+		update_formspec(meta)
 	end,
 
 
