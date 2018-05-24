@@ -52,8 +52,6 @@ minetest.register_abm({
 	end
 })
 
--- TODO: group:soil to gravel?
-
 -- soil in vacuum
 minetest.register_abm({
         label = "space vacuum soil dry",
