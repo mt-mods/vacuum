@@ -2,7 +2,8 @@
 
 local leaky_nodes = {
 	"group:door", "group:wool", "group:wood",
-	"group:tree", "group:soil", "group:pipe",
+	"group:tree", "group:soil",
+	"group:pipe", "group:tube",
 	"group:technic_lv_cable", "group:technic_mv_cable", "group:technic_hv_cable"
 }
 
@@ -105,12 +106,20 @@ minetest.register_abm({
 			return
 		end
 
-		-- TODO check n nodes down (multiple simple door airlock..)
-		-- in space: replace air with vacuum
-		local node = minetest.find_node_near(pos, 1, {"air"})
 
-		if node ~= nil then
-			minetest.set_node(node, {name = "vacuum:vacuum"})
+		local node = minetest.get_node(pos)
+
+		if node.name == "pipeworks:entry_panel_empty" or node.name == "pipeworks:entry_panel_loaded" then
+			-- air thight pipes
+			return
+		end
+
+		-- TODO check n nodes down (multiple simple door airlock hack)
+		-- in space: replace air with vacuum
+		local surrounding_node = minetest.find_node_near(pos, 1, {"air"})
+
+		if surrounding_node ~= nil then
+			minetest.set_node(surrounding_node, {name = "vacuum:vacuum"})
 		end
 	end
 })
