@@ -1,24 +1,42 @@
 local has_technic_mod = minetest.get_modpath("technic")
 
-
-local update_formspec = function(meta)
-	local enabled = meta:get_int("enabled") == 1
-
-	local state = "Disabled"
-	if enabled then state = "Enabled" end
-
-	meta:set_string("formspec", "size[8,2;]" ..
-		"label[0,0;" .. state .. "]" ..
-		"button_exit[0,1;8,1;toggle;Toggle]" ..
-		"")
-
-	meta:set_string("infotext", "Airpump: " .. state)
-
-	if not has_technic_mod then
-		-- state == enabled
-		meta:set_int("state", meta:get_int("enabled"))
+-- flush room with air
+vacuum.flush_air = function(pos, i)
+	if i == nil then
+		-- default to 7 layers
+		i = vacuum.air_pump_range
 	end
 
+	local pos1 = { x=pos.x-1, y=pos.y-1, z=pos.z-1 }
+	local pos2 = { x=pos.x+1, y=pos.y+1, z=pos.z+1 }
+
+	local vacuum_nodes = minetest.find_nodes_in_area(pos1, pos2, {"vacuum:vacuum"})
+
+	for _,node in pairs(vacuum_nodes) do
+		-- replace vacuum with air
+		minetest.set_node(node, {name = "air"})
+	end
+
+	if i <= 0 then
+		-- max iterations reached, abort here
+		return
+	end
+
+	for _,node in pairs(vacuum_nodes) do
+		-- recurse after surrounding air set
+		vacuum.flush_air(node, i-1)
+	end
+
+end
+
+-- update airpump formspec
+local update_formspec = function(meta)
+	meta:set_string("formspec", "size[8,2;]" ..
+		"label[0,0;Flush]" ..
+		"button_exit[0,1;8,1;flush;Flush]" ..
+		"")
+
+	-- meta:set_string("infotext", "Airpump: " .. state)
 end
 
 
@@ -34,12 +52,7 @@ minetest.register_node("vacuum:airpump", {
 
 	mesecons = {effector = {
 		action_on = function (pos, node)
-			local meta = minetest.get_meta(pos)
-			meta:set_int("enabled", 1)
-		end,
-		action_off = function (pos, node)
-			local meta = minetest.get_meta(pos)
-			meta:set_int("enabled", 0)
+			vacuum.flush_air(pos)
 		end
 	}},
 
@@ -57,14 +70,9 @@ minetest.register_node("vacuum:airpump", {
 
 	on_receive_fields = function(pos, formname, fields, sender)
 		local meta = minetest.get_meta(pos);
-		local enabled = meta:get_int("enabled") == 1
 
-		if fields.toggle then
-			if enabled then
-				meta:set_int("enabled", 0)
-			else
-				meta:set_int("enabled", 1)
-			end
+		if fields.flush then
+			vacuum.flush_air(pos)
 		end
 
 		update_formspec(meta)

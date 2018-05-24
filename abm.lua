@@ -32,25 +32,6 @@ function pressurize(pos, i)
 end
 
 minetest.register_abm({
-        label = "space air pump",
-	nodenames = {"vacuum:airpump"},
-	neighbors = {"vacuum:vacuum"},
-	interval = 3,
-	chance = 1,
-	action = function(pos)
-		local meta = minetest.get_meta(pos)
-		local state = meta:get_int("state") == 1
-
-		if state then
-			minetest.after(0, function()
-				pressurize(pos, 30)
-			end)
-		end
-	end
-})
-
-
-minetest.register_abm({
         label = "space vacuum",
 	nodenames = {"air"},
 	neighbors = {"vacuum:vacuum"},
@@ -126,6 +107,7 @@ minetest.register_abm({
 			return
 		end
 
+		-- TODO check n nodes down (multiple simple door airlock..)
 		-- in space: replace air with vacuum
 		local node = minetest.find_node_near(pos, 1, {"air"})
 
