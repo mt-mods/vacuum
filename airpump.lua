@@ -29,6 +29,32 @@ vacuum.flush_air = function(pos, i)
 
 end
 
+local is_airpump_ready = function(meta)
+	if not has_technic_mod then
+		-- no technic, always ready
+		return true
+	end
+
+	-- check power levels
+	local store = meta:get_int("powerstorage")
+	return store >= vacuum.air_pump_power_store
+end
+
+local update_infotext = function(meta)
+	local state = "Charging..."
+
+	if has_technic_mod then
+		local percent = math.floor(meta:get_int("powerstorage") / vacuum.air_pump_power_store * 100)
+		state = state .. " (" .. percent .. " %)"
+	end
+
+	if is_airpump_ready(meta) then
+		state = "Ready!"
+	end
+
+	meta:set_string("infotext", "Airpump: " .. state)
+end
+
 -- update airpump formspec
 local update_formspec = function(meta)
 	meta:set_string("formspec", "size[8,2;]" ..
@@ -36,7 +62,8 @@ local update_formspec = function(meta)
 		"button_exit[0,1;8,1;flush;Flush]" ..
 		"")
 
-	-- meta:set_string("infotext", "Airpump: " .. state)
+	update_infotext(meta)
+
 end
 
 
@@ -52,7 +79,12 @@ minetest.register_node("vacuum:airpump", {
 
 	mesecons = {effector = {
 		action_on = function (pos, node)
-			vacuum.flush_air(pos)
+			local meta = minetest.get_meta(pos)
+			if is_airpump_ready(meta) then
+				meta:set_int("powerstorage", 0)
+				vacuum.flush_air(pos)
+				update_infotext(meta)
+			end
 		end
 	}},
 
@@ -71,7 +103,8 @@ minetest.register_node("vacuum:airpump", {
 	on_receive_fields = function(pos, formname, fields, sender)
 		local meta = minetest.get_meta(pos);
 
-		if fields.flush then
+		if fields.flush and is_airpump_ready(meta) then
+			meta:set_int("powerstorage", 0)
 			vacuum.flush_air(pos)
 		end
 
@@ -85,21 +118,21 @@ minetest.register_node("vacuum:airpump", {
 		local eu_input = meta:get_int("HV_EU_input")
 		local demand = meta:get_int("HV_EU_demand")
 		local store = meta:get_int("powerstorage")
-		local enabled = meta:get_int("enabled") == 1
 
-		if enabled then
-			-- charge
-			demand = 10000
-			meta:set_int("HV_EU_demand", demand)
-		end
-
-		if eu_input < demand then
-			-- no power
-			meta:set_int("state", 0)
+		if store < vacuum.air_pump_power_store then
+			-- not full, charge
+			meta:set_int("HV_EU_demand", vacuum.air_pump_power_draw)
 		else
-			-- power!
-			meta:set_int("state", 1)
+			-- full
+			meta:set_int("HV_EU_demand", 0)
 		end
+
+		if eu_input >= 0 then
+			-- power!
+			meta:set_int("powerstorage", meta:get_int("powerstorage") + eu_input)
+		end
+
+		update_infotext(meta)
 	end
 
 })
