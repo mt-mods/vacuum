@@ -12,24 +12,8 @@ local is_pos_in_space = function(pos)
 	return pos.y > vacuum.space_height + 40
 end
 
-function pressurize(pos, i)
-	if i <= 0 then
-		return
-	end
-
-	local node = minetest.find_node_near(pos, 1, {"vacuum:vacuum"})
-	if node ~= nil then
-		-- vacuum found, pressurize it
-		minetest.set_node(node, {name = "air"})
-		pressurize(node, i - 1)
-	else
-		-- no vacuum found, search for leaky nodes
-		node = minetest.find_node_near(pos, 1, leaky_nodes)
-		if node ~= nil then
-			-- pressurize around it
-			pressurize(node, i - 1)
-		end
-	end
+local is_pos_on_earth = function(pos)
+	return pos.y < vacuum.space_height - 40
 end
 
 minetest.register_abm({
@@ -39,14 +23,14 @@ minetest.register_abm({
 	interval = 1,
 	chance = 3,
 	action = function(pos)
-		if not is_pos_in_space(pos) then
+		if is_pos_on_earth(pos) then
 			-- not in space, pressurize
 			local node = minetest.find_node_near(pos, 1, {"vacuum:vacuum"})
 
 			if node ~= nil then
 				minetest.set_node(node, {name = "air"})
 			end
-		else
+		elseif is_pos_in_space(pos) then
 			-- in space, evacuate air
 			minetest.set_node(pos, {name = "vacuum:vacuum"})
 		end
@@ -101,25 +85,24 @@ minetest.register_abm({
 	interval = 1,
 	chance = 2,
 	action = function(pos)
-		if not is_pos_in_space(pos) then
+		if is_pos_on_earth(pos) then
 			-- on earth: TODO: replace vacuum with air
 			return
-		end
+		elseif is_pos_in_space(pos) then
+			local node = minetest.get_node(pos)
 
+			if node.name == "pipeworks:entry_panel_empty" or node.name == "pipeworks:entry_panel_loaded" then
+				-- air thight pipes
+				return
+			end
 
-		local node = minetest.get_node(pos)
+			-- TODO check n nodes down (multiple simple door airlock hack)
+			-- in space: replace air with vacuum
+			local surrounding_node = minetest.find_node_near(pos, 1, {"air"})
 
-		if node.name == "pipeworks:entry_panel_empty" or node.name == "pipeworks:entry_panel_loaded" then
-			-- air thight pipes
-			return
-		end
-
-		-- TODO check n nodes down (multiple simple door airlock hack)
-		-- in space: replace air with vacuum
-		local surrounding_node = minetest.find_node_near(pos, 1, {"air"})
-
-		if surrounding_node ~= nil then
-			minetest.set_node(surrounding_node, {name = "vacuum:vacuum"})
+			if surrounding_node ~= nil then
+				minetest.set_node(surrounding_node, {name = "vacuum:vacuum"})
+			end
 		end
 	end
 })
