@@ -71,7 +71,7 @@ minetest.register_node("vacuum:airpump", {
 	description = "Air pump",
 	tiles = {"vacuum_airpump.png"},
 	paramtype = "light",
-	groups = {cracky=3,oddly_breakable_by_hand=3},
+	groups = {cracky=3,oddly_breakable_by_hand=3,technic_machine = 1, technic_hv = 1},
 	sounds = default.node_sound_glass_defaults(),
 
 	connects_to = {"group:technic_hv_cable"},
