@@ -13,8 +13,11 @@ vacuum.flush_air = function(pos, i)
 	local vacuum_nodes = minetest.find_nodes_in_area(pos1, pos2, {"vacuum:vacuum"})
 
 	for _,node in pairs(vacuum_nodes) do
-		-- replace vacuum with air
-		minetest.set_node(node, {name = "air"})
+		-- replace vacuum with buffer air and start expiration timer
+		minetest.set_node(node, {name = "vacuum:air"})
+		local timer = minetest.get_node_timer(node)
+		-- buffer air expires after 5 seconds
+		timer:start(5)
 	end
 
 	if i <= 0 then
