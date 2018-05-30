@@ -16,6 +16,8 @@ local is_pos_on_earth = function(pos)
 	return pos.y < vacuum.space_height - 40
 end
 
+
+-- vacuum propagation
 minetest.register_abm({
         label = "space vacuum",
 	nodenames = {"air"},
