@@ -141,8 +141,29 @@ minetest.register_node("vacuum:airpump", {
 
 })
 
+-- TODO: crafting recipe
 
 if has_technic_mod then
 	technic.register_machine("HV", "vacuum:airpump", technic.receiver)
+
+	minetest.register_craft({
+		output = "vacuum:airpump",
+		recipe = {
+			{"default:steel_ingot", "technic:machine_casing", "default:steelblock"},
+			{"technic:blue_energy_crystal", "technic:hv_transformer", "technic:blue_energy_crystal"},
+			{"default:steelblock", "technic:machine_casing", "default:steel_ingot"},
+		},
+	})
+
+else
+	minetest.register_craft({
+		output = "vacuum:airpump",
+		recipe = {
+			{"default:steel_ingot", "default:mese_block", "default:steel_ingot"},
+			{"default:diamond", "default:glass", "default:steel_ingot"},
+			{"default:steel_ingot", "default:steelblock", "default:steel_ingot"},
+		},
+	})
+
 end
 
