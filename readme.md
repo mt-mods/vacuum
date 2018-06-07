@@ -37,6 +37,9 @@ Optional dependencies:
 * Mesecon interaction (execute pump on signal)
 * Technic rechargeable (HV)
 
+Tested mods:
+* digtron
+
 # Crafting
 
 TODO
