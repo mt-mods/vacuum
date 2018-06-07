@@ -13,5 +13,6 @@ minetest.register_node("vacuum:vacuum", {
 	alpha = 0.1,
 	groups = {not_in_creative_inventory=0},
 	paramtype = "light",
+	drop = {},
 	sunlight_propagates = true
 })
