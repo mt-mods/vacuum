@@ -150,7 +150,7 @@ if has_technic_mod then
 		output = "vacuum:airpump",
 		recipe = {
 			{"default:steel_ingot", "technic:machine_casing", "default:steelblock"},
-			{"technic:blue_energy_crystal", "technic:hv_transformer", "technic:blue_energy_crystal"},
+			{"default:glass", "technic:hv_transformer", "default:diamond"},
 			{"default:steelblock", "technic:machine_casing", "default:steel_ingot"},
 		},
 	})
