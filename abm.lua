@@ -139,6 +139,11 @@ minetest.register_abm({
 				return
 			end
 
+			if node.name == "vacuum:airpump" then
+				-- pump is airthight
+				return
+			end
+
 			-- TODO check n nodes down (multiple simple door airlock hack)
 			-- in space: replace air with vacuum
 			local surrounding_node = minetest.find_node_near(pos, 1, {"air"})
