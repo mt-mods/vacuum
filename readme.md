@@ -5,14 +5,14 @@ Vacuum implementation and blocks for pumping and detection of vacuum and air
 NOTE: Work in progress!
 
 * Github: [https://github.com/thomasrudin-mt/vacuum](https://github.com/thomasrudin-mt/vacuum)
-* Forum topic: TODO
+* Forum topic: [https://forum.minetest.net/viewtopic.php?f=9&t=20195](https://forum.minetest.net/viewtopic.php?f=9&t=20195)
 
 # Operation
 
 The space/vacuum starts at 1000 blocks in the y axis (hardcoded in init.lua)
 
 The mod defines an airlike **vacuum:vacuum** block which suffocates the player (with drowning=1).
-An [airtank](https://github.com/minetest-mods/airtanks) or similar would help to survive in space.
+An [spacesuit](https://git.rudin.io/minetest/spacesuit) or similar would help to survive in space.
 
 Air can be pumped in to any closed structure with an airpump (vacuum:airpump).
 The airpump works in impulse mode, so if you have your airthight structure you can flush it with air (or mesecon signal)
@@ -30,15 +30,17 @@ Vacuum exposure on nodes:
 * All plants convert to dry shrubs
 * Leaves disappear
 * Water evaporates
+* Torches and ladders drop (to prevent air bubbles/cheating)
 
 # Compatibility
 
 Optional dependencies:
-* Mesecon interaction (execute pump on signal)
+* Mesecon interaction (execute airpump on signal)
 * Technic rechargeable (HV)
 
 Tested mods:
 * digtron
+* technic (quarry, solar)
 
 # Crafting
 
@@ -65,6 +67,7 @@ Mesecon/Technic compat:
 
 # History
 
-TODO
+## Version 0.1
+* Initial release
 
 
