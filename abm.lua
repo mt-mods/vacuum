@@ -1,8 +1,8 @@
 
-
+-- air leaking nodes
 local leaky_nodes = {
-	"group:door", "group:wool", "group:wood",
-	"group:tree", "group:soil",
+	"group:door",
+	"group:soil",
 	"group:pipe", "group:tube",
 	"group:technic_lv_cable", "group:technic_mv_cable", "group:technic_hv_cable"
 }
@@ -35,6 +35,47 @@ minetest.register_abm({
 		elseif is_pos_in_space(pos) then
 			-- in space, evacuate air
 			minetest.set_node(pos, {name = "vacuum:vacuum"})
+		end
+	end
+})
+
+-- weird behaving nodes in vacuum
+local drop_nodes = {
+	"default:torch",
+	"default:torch_wall",
+	"default:torch_ceiling",
+	"default:ladder_wood",
+	"default:ladder_steel",
+	"default:dry_shrub",
+	"group:wool",
+	"group:wood",
+	"group:tree"
+	-- TODO: more nodes: button, switches, half slabs, .. drop everything!
+}
+
+-- special drop cases
+local get_drop_name = function(name)
+	if name == "default:torch_wall" or name == "default:torch_ceiling" then
+		return "default:torch"
+	else
+		return name
+	end
+end
+
+-- weird nodes in vacuum
+minetest.register_abm({
+        label = "space drop nodes",
+	nodenames = drop_nodes,
+	neighbors = {"vacuum:vacuum"},
+	interval = 2,
+	chance = 3,
+	action = function(pos)
+		local node = minetest.get_node(pos)
+		minetest.set_node(pos, {name = "vacuum:vacuum"})
+
+		local dropname = get_drop_name(node.name)
+		if dropname then
+			minetest.add_item(pos, {name = dropname})
 		end
 	end
 })

@@ -141,7 +141,6 @@ minetest.register_node("vacuum:airpump", {
 
 })
 
--- TODO: crafting recipe
 
 if has_technic_mod then
 	technic.register_machine("HV", "vacuum:airpump", technic.receiver)
