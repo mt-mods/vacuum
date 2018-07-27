@@ -16,17 +16,50 @@ local is_pos_on_earth = function(pos)
 	return pos.y < vacuum.space_height - 40
 end
 
+local near_powered_airpump = function(pos)
+	local node = minetest.find_node_near(pos, 10, {"vacuum:airpump"})
+	if node ~= nil then
+		--local meta = minetest.get_meta(node) --TODO
+		return true
+	end
+
+	return false
+end
+
+local is_airpump_powered = function(pos)
+	return true--TODO
+end
+
+-- initial airpump step
+minetest.register_abm({
+        label = "airpump seed",
+	nodenames = {"vacuum:airpump"},
+	neighbors = {"vacuum:vacuum"},
+	interval = 2,
+	chance = 1,
+	action = function(pos)
+		if is_airpump_powered(pos) then
+			-- seed initial air
+			local node = minetest.find_node_near(pos, 1, {"vacuum:vacuum"})
+
+			if node ~= nil then
+				minetest.set_node(node, {name = "air"})
+			end
+		end
+	end
+})
+
 
 -- vacuum propagation
 minetest.register_abm({
         label = "space vacuum",
 	nodenames = {"air"},
 	neighbors = {"vacuum:vacuum"},
-	interval = 1,
+	interval = 2,
 	chance = 3,
 	action = function(pos)
-		if is_pos_on_earth(pos) then
-			-- not in space, pressurize
+		if is_pos_on_earth(pos) or near_powered_airpump(pos) then
+			-- on earth or near a powered airpump
 			local node = minetest.find_node_near(pos, 1, {"vacuum:vacuum"})
 
 			if node ~= nil then
