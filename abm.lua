@@ -16,6 +16,11 @@ local is_pos_on_earth = function(pos)
 	return pos.y < vacuum.space_height - 40
 end
 
+
+local is_airpump_powered = function(pos)
+	return true--TODO
+end
+
 local near_powered_airpump = function(pos)
 	local node = minetest.find_node_near(pos, 10, {"vacuum:airpump"})
 	if node ~= nil then
@@ -26,9 +31,6 @@ local near_powered_airpump = function(pos)
 	return false
 end
 
-local is_airpump_powered = function(pos)
-	return true--TODO
-end
 
 -- initial airpump step
 minetest.register_abm({
