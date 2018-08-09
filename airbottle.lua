@@ -1,19 +1,31 @@
 
 
 
-minetest.register_node("vacuum:air_bottle", {
+minetest.register_craftitem("vacuum:air_bottle", {
 	description = "Air Bottle",
-	drawtype = "plantlike",
-	tiles = {"vessels_steel_bottle.png^[colorize:#0000FFAA"},
 	inventory_image = "vessels_steel_bottle.png^[colorize:#0000FFAA",
-	wield_image = "vessels_steel_bottle.png^[colorize:#0000FFAA",
-	paramtype = "light",
-	is_ground_content = false,
-	walkable = false,
-	selection_box = {
-		type = "fixed",
-		fixed = {-0.25, -0.5, -0.25, 0.25, 0.3, 0.25}
-	},
-	groups = {vessel = 1, dig_immediate = 3, attached_node = 1},
-	sounds = default.node_sound_defaults(),
+	stack_max = 1,
+	on_secondary_use = function(itemstack, user)
+		print("air_bottle secondary use: " .. itemstack:to_string() .. " " .. user:get_player_name())--XXX
+		local pos = user:get_pos()
+		pos.y = pos.y + 1.5
+		user:move_to(pos, true)
+	end,
+
+	on_place = function(itemstack, placer, pointed_thing)
+		print("air_bottle place: " .. itemstack:to_string() .. " " .. placer:get_player_name())--XXX
+	end,
+
+	on_use = function(itemstack, user, pointed_thing)
+		print("air_bottle use: " .. itemstack:to_string() .. " " .. user:get_player_name())--XXX
+	end
+})
+
+minetest.register_craft({
+	output = "vacuum:air_bottle",
+	recipe = {
+		{"vessels:steel_bottle", "vessels:steel_bottle", "vessels:steel_bottle"},
+		{"", "wool:blue", ""},
+		{"", "", ""}
+	}
 })

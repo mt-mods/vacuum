@@ -57,8 +57,8 @@ minetest.register_abm({
         label = "space vacuum",
 	nodenames = {"air"},
 	neighbors = {"vacuum:vacuum"},
-	interval = 2,
-	chance = 3,
+	interval = 1,
+	chance = 100,
 	action = function(pos)
 		if is_pos_on_earth(pos) or near_powered_airpump(pos) then
 			-- on earth or near a powered airpump
