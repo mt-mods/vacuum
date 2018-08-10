@@ -1,14 +1,74 @@
 
 
+local has_full_air_bottle = function(inv)
+	return inv:contains_item("main", {name="vacuum:air_bottle", count=1})
+end
+
+local has_empty_air_bottle = function(inv)
+	return inv:contains_item("main", {name="vessels:steel_bottle", count=1})
+end
+
+local do_empty_bottle = function(inv)
+	if not has_full_air_bottle then
+		return false
+	end
+
+	local new_stack = ItemStack("vessels:steel_bottle")
+
+	if inv:room_for_item("main", new_stack) then
+		inv:remove_item("main", {name="vacuum:air_bottle", count=1})
+		inv:add_item("main", new_stack)
+	end
+
+	return true
+end
+
+local do_fill_bottle = function(inv)
+	if not has_empty_air_bottle then
+		return false
+	end
+
+	local new_stack = ItemStack("vacuum:air_bottle")
+
+	if inv:room_for_item("main", new_stack) then
+		inv:remove_item("main", {name="vessels:steel_bottle", count=1})
+		inv:add_item("main", new_stack)
+	end
+
+	return true
+end
+
+
+vacuum.airpump_active = function(meta)
+	local inv = meta:get_inventory()
+	return meta:get_int("enabled") == 1 and has_full_air_bottle(inv)
+end
+
+
 local update_infotext = function(meta)
-	meta:set_string("infotext", "Airpump")
+	local str = "Airpump: "
+
+	if vacuum.airpump_active(meta) then
+		str = str .. " (Active)"
+	else
+		str = str .. " (Inactive)"
+	end
+
+	meta:set_string("infotext", str)
 end
 
 -- update airpump formspec
 local update_formspec = function(meta)
+	local btnName = "State: "
+
+	if meta:get_int("enabled") == 1 then
+		btnName = btnName .. "<Enabled>"
+	else
+		btnName = btnName .. "<Disabled>"
+	end
+
 	meta:set_string("formspec", "size[8,7.2;]" ..
-		"label[0,0;Flush]" ..
-		"button_exit[0,1;8,1;flush;Flush]" ..
+		"button[0,1;8,1;toggle;" .. btnName .. "]" ..
 		"list[context;main;0,2;8,1;]" ..
 		"list[current_player;main;0,3.2;8,4;]" ..
 		"")
@@ -31,7 +91,11 @@ minetest.register_node("vacuum:airpump", {
 	mesecons = {effector = {
 		action_on = function (pos, node)
 			local meta = minetest.get_meta(pos)
-			--TODO
+			meta:set_int("enabled", 1)
+		end,
+		action_off = function (pos, node)
+			local meta = minetest.get_meta(pos)
+			meta:set_int("enabled", 0)
 		end
 	}},
 
@@ -46,7 +110,6 @@ minetest.register_node("vacuum:airpump", {
 
 		local inv = meta:get_inventory()
 		inv:set_size("main", 8)
-		--TODO
 
 		update_formspec(meta)
 	end,
@@ -60,47 +123,40 @@ minetest.register_node("vacuum:airpump", {
 	on_receive_fields = function(pos, formname, fields, sender)
 		local meta = minetest.get_meta(pos);
 
-		--TODO
+		if fields.toggle then
+			if meta:get_int("enabled") == 1 then
+				meta:set_int("enabled", 0)
+			else
+				meta:set_int("enabled", 1)
+			end
+		end
 
 		update_formspec(meta)
-	end,
-
-
-	technic_run = function(pos, node)
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()
-
-		local eu_input = meta:get_int("HV_EU_input")
-		local demand = meta:get_int("HV_EU_demand")
-		local store = meta:get_int("powerstorage")
-
-		local empty_vessel_present = inv:contains_item("main", {name="vessels:steel_bottle", count=1}) and pos.y <= vacuum.space_height
-
-		if store < vacuum.air_pump_power_store or empty_vessel_present then
-			-- not full, charge
-			meta:set_int("HV_EU_demand", vacuum.air_pump_power_draw)
-		else
-			-- full
-			meta:set_int("HV_EU_demand", 0)
-		end
-
-		if empty_vessel_present then
-			-- on earth and empty steel bottle present
-			local new_stack = ItemStack("vacuum:air_bottle")
-
-			if inv:room_for_item("main", new_stack) then
-				inv:remove_item("main", {name="vessels:steel_bottle", count=1})
-				inv:add_item("main", new_stack)
-			end
-
-		elseif eu_input >= 0 then
-			-- power!
-			meta:set_int("powerstorage", meta:get_int("powerstorage") + eu_input)
-		end
-
-		update_infotext(meta)
 	end
 
+})
+
+-- returns true, if in space (with safety margin for abm)
+local is_pos_in_space = function(pos)
+	return pos.y > vacuum.space_height + 40
+end
+
+minetest.register_abm({
+        label = "airpump",
+	nodenames = {"vacuum:airpump"},
+	interval = 5,
+	chance = 1,
+	action = function(pos)
+		local meta = minetest.get_meta(pos)
+		if vacuum.airpump_active(meta) then
+			if is_pos_in_space(pos) then
+				do_empty_bottle(meta:get_inventory())
+			else
+				do_fill_bottle(meta:get_inventory())
+			end
+			update_infotext(meta)
+		end
+	end
 })
 
 

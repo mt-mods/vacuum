@@ -1,11 +1,7 @@
 
 vacuum = {
 	space_height = 1000,
-	air_pump_range = 16,
-
-	-- technic
-	air_pump_power_store = 50000,
-	air_pump_power_draw = 5000
+	air_pump_range = 10,
 }
 
 

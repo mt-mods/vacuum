@@ -18,14 +18,15 @@ end
 
 
 local is_airpump_powered = function(pos)
-	return true--TODO
+	local meta = minetest.get_meta(pos)
+	return vacuum.airpump_active(meta)
 end
 
 local near_powered_airpump = function(pos)
-	local node = minetest.find_node_near(pos, 10, {"vacuum:airpump"})
+	local node = minetest.find_node_near(pos, vacuum.air_pump_range, {"vacuum:airpump"})
 	if node ~= nil then
-		--local meta = minetest.get_meta(node) --TODO
-		return true
+		-- TODO: multiple air pumps
+		return is_airpump_powered(node)
 	end
 
 	return false
@@ -37,7 +38,7 @@ minetest.register_abm({
         label = "airpump seed",
 	nodenames = {"vacuum:airpump"},
 	neighbors = {"vacuum:vacuum"},
-	interval = 2,
+	interval = 1,
 	chance = 1,
 	action = function(pos)
 		if is_airpump_powered(pos) then
@@ -52,13 +53,13 @@ minetest.register_abm({
 })
 
 
--- vacuum propagation
+-- vacuum/air propagation
 minetest.register_abm({
         label = "space vacuum",
 	nodenames = {"air"},
 	neighbors = {"vacuum:vacuum"},
 	interval = 1,
-	chance = 100,
+	chance = 5,
 	action = function(pos)
 		if is_pos_on_earth(pos) or near_powered_airpump(pos) then
 			-- on earth or near a powered airpump
@@ -161,9 +162,9 @@ minetest.register_abm({
 	nodenames = leaky_nodes,
 	neighbors = {"vacuum:vacuum"},
 	interval = 1,
-	chance = 2,
+	chance = 5,
 	action = function(pos)
-		if is_pos_on_earth(pos) then
+		if is_pos_on_earth(pos) or near_powered_airpump(pos) then
 			-- on earth: TODO: replace vacuum with air
 			return
 		elseif is_pos_in_space(pos) then
