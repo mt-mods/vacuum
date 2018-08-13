@@ -13,7 +13,7 @@ local near_powered_airpump = function(pos)
 
 	local nodes = minetest.find_nodes_in_area(pos1, pos2, {"vacuum:airpump"})
 	for _,node in ipairs(nodes) do
-		local meta = minetest.get_meta(pos)
+		local meta = minetest.get_meta(node)
 		if vacuum.airpump_active(meta) then
 			return true
 		end

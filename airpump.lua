@@ -174,7 +174,8 @@ minetest.register_abm({
 	interval = 1,
 	chance = 1,
 	action = function(pos)
-		if is_airpump_powered(pos) then
+		local meta = minetest.get_meta(pos)
+		if vacuum.airpump_active(meta) then
 			-- seed initial air
 			local node = minetest.find_node_near(pos, 1, {"vacuum:vacuum"})
 
