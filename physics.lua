@@ -7,50 +7,21 @@ local leaky_nodes = {
 	"group:technic_lv_cable", "group:technic_mv_cable", "group:technic_hv_cable"
 }
 
--- returns true, if in space (with safety margin for abm)
-local is_pos_in_space = function(pos)
-	return pos.y > vacuum.space_height + 40
-end
-
-local is_pos_on_earth = function(pos)
-	return pos.y < vacuum.space_height - 40
-end
-
-
-local is_airpump_powered = function(pos)
-	local meta = minetest.get_meta(pos)
-	return vacuum.airpump_active(meta)
-end
-
 local near_powered_airpump = function(pos)
-	local node = minetest.find_node_near(pos, vacuum.air_pump_range, {"vacuum:airpump"})
-	if node ~= nil then
-		-- TODO: multiple air pumps
-		return is_airpump_powered(node)
+	local pos1 = vector.subtract(pos, {x=vacuum.air_pump_range, y=vacuum.air_pump_range, z=vacuum.air_pump_range})
+	local pos2 = vector.add(pos, {x=vacuum.air_pump_range, y=vacuum.air_pump_range, z=vacuum.air_pump_range})
+
+	local nodes = minetest.find_nodes_in_area(pos1, pos2, {"vacuum:airpump"})
+	for _,node in ipairs(nodes) do
+		local meta = minetest.get_meta(pos)
+		if vacuum.airpump_active(meta) then
+			return true
+		end
 	end
 
 	return false
 end
 
-
--- initial airpump step
-minetest.register_abm({
-        label = "airpump seed",
-	nodenames = {"vacuum:airpump"},
-	neighbors = {"vacuum:vacuum"},
-	interval = 1,
-	chance = 1,
-	action = function(pos)
-		if is_airpump_powered(pos) then
-			-- seed initial air
-			local node = minetest.find_node_near(pos, 1, {"vacuum:vacuum"})
-
-			if node ~= nil then
-				minetest.set_node(node, {name = "air"})
-			end
-		end
-	end
-})
 
 
 -- vacuum/air propagation
@@ -61,14 +32,14 @@ minetest.register_abm({
 	interval = 1,
 	chance = 5,
 	action = function(pos)
-		if is_pos_on_earth(pos) or near_powered_airpump(pos) then
+		if vacuum.is_pos_on_earth(pos) or near_powered_airpump(pos) then
 			-- on earth or near a powered airpump
 			local node = minetest.find_node_near(pos, 1, {"vacuum:vacuum"})
 
 			if node ~= nil then
 				minetest.set_node(node, {name = "air"})
 			end
-		elseif is_pos_in_space(pos) then
+		elseif vacuum.is_pos_in_space(pos) then
 			-- in space, evacuate air
 			minetest.set_node(pos, {name = "vacuum:vacuum"})
 		end
@@ -164,10 +135,10 @@ minetest.register_abm({
 	interval = 1,
 	chance = 5,
 	action = function(pos)
-		if is_pos_on_earth(pos) or near_powered_airpump(pos) then
+		if vacuum.is_pos_on_earth(pos) or near_powered_airpump(pos) then
 			-- on earth: TODO: replace vacuum with air
 			return
-		elseif is_pos_in_space(pos) then
+		elseif vacuum.is_pos_in_space(pos) then
 			local node = minetest.get_node(pos)
 
 			if node.name == "pipeworks:entry_panel_empty" or node.name == "pipeworks:entry_panel_loaded" then
