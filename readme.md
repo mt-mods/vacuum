@@ -2,7 +2,6 @@ Minetest vacuum
 ======
 
 Vacuum implementation and blocks for pumping and detection of vacuum and air
-NOTE: Work in progress!
 
 * Github: [https://github.com/thomasrudin-mt/vacuum](https://github.com/thomasrudin-mt/vacuum)
 * Forum topic: [https://forum.minetest.net/viewtopic.php?f=9&t=20195](https://forum.minetest.net/viewtopic.php?f=9&t=20195)
@@ -15,7 +14,8 @@ The mod defines an airlike **vacuum:vacuum** block which suffocates the player (
 An [spacesuit](https://git.rudin.io/minetest/spacesuit) or similar would help to survive in space.
 
 Air can be pumped in to any closed structure with an airpump (vacuum:airpump).
-The airpump works in impulse mode, so if you have your airthight structure you can flush it with air (or mesecon signal)
+the airpump needs air-bottles to work in vaccum. Air-bottles can be filled with an airpump on the ground.
+Just place empty steel bottles in an airpump on the ground, enable it and it produces an airbottle every few seconds.
 
 ## Vacuum propagation
 
@@ -35,8 +35,7 @@ Vacuum exposure on nodes:
 # Compatibility
 
 Optional dependencies:
-* Mesecon interaction (execute airpump on signal)
-* Technic rechargeable (HV)
+* Mesecon interaction (enable/disable airpump)
 
 Tested mods:
 * digtron
@@ -59,10 +58,6 @@ Hole in the structure (leaking air):
 Hole from outside:
 
 ![](screenshots/screenshot_20180524_204132.png?raw=true)
-
-Mesecon/Technic compat:
-
-![](screenshots/screenshot_20180524_204707.png?raw=true)
 
 
 # History
