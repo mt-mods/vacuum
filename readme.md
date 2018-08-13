@@ -36,6 +36,7 @@ Vacuum exposure on nodes:
 
 Optional dependencies:
 * Mesecon interaction (enable/disable airpump)
+* Pipeworks
 
 Tested mods:
 * digtron

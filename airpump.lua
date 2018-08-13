@@ -1,4 +1,11 @@
 
+local has_pipeworks = minetest.get_modpath("pipeworks")
+
+local tube_entry = ""
+
+if has_pipeworks then
+	tube_entry = "^pipeworks_tube_connection_wooden.png"
+end
 
 local has_full_air_bottle = function(inv)
 	return inv:contains_item("main", {name="vacuum:air_bottle", count=1})
@@ -18,6 +25,7 @@ local do_empty_bottle = function(inv)
 	if inv:room_for_item("main", new_stack) then
 		inv:remove_item("main", {name="vacuum:air_bottle", count=1})
 		inv:add_item("main", new_stack)
+		minetest.sound_play("vacuum_hiss", {pos = pos, gain = 0.5})
 	end
 
 	return true
@@ -33,6 +41,7 @@ local do_fill_bottle = function(inv)
 	if inv:room_for_item("main", new_stack) then
 		inv:remove_item("main", {name="vessels:steel_bottle", count=1})
 		inv:add_item("main", new_stack)
+		minetest.sound_play("vacuum_hiss", {pos = pos, gain = 0.5})
 	end
 
 	return true
@@ -87,14 +96,18 @@ end
 
 
 minetest.register_node("vacuum:airpump", {
-	description = "Air pump",
-	tiles = {"vacuum_airpump.png"},
+	description = "Air pump",--tube_entry
+	tiles = { -- top, bottom
+		"vacuum_airpump.png",
+		"vacuum_airpump.png" .. tube_entry,
+		"vacuum_airpump.png" .. tube_entry,
+		"vacuum_airpump.png" .. tube_entry,
+		"vacuum_airpump.png" .. tube_entry,
+		"vacuum_airpump.png" .. tube_entry
+	},
 	paramtype = "light",
-	groups = {cracky=3,oddly_breakable_by_hand=3},
+	groups = {cracky=3, oddly_breakable_by_hand=3, tubedevice=1, tubedevice_receiver=1},
 	sounds = default.node_sound_glass_defaults(),
-
-	connects_to = {"group:technic_hv_cable"},
-	connect_sides = {"bottom", "top", "left", "right", "front", "back"},
 
 	mesecons = {effector = {
 		action_on = function (pos, node)
@@ -140,7 +153,23 @@ minetest.register_node("vacuum:airpump", {
 		end
 
 		update_formspec(meta)
-	end
+	end,
+
+	tube = {
+		insert_object = function(pos, node, stack, direction)
+			local meta = minetest.get_meta(pos)
+			local inv = meta:get_inventory()
+			return inv:add_item("main", stack)
+		end,
+		can_insert = function(pos, node, stack, direction)
+			local meta = minetest.get_meta(pos)
+			local inv = meta:get_inventory()
+			stack = stack:peek_item(1)
+			return inv:room_for_item("main", stack)
+		end,
+		input_inventory = "main",
+		connect_sides = {left = 1, right = 1, back = 1, bottom = 1, top = 1}
+	}
 
 })
 
@@ -153,7 +182,6 @@ minetest.register_abm({
 	action = function(pos)
 		local meta = minetest.get_meta(pos)
 		if vacuum.airpump_enabled(meta) then
-			minetest.sound_play("vacuum_hiss", {pos = pos, gain = 0.5})
 			if vacuum.is_pos_in_space(pos) then
 				do_empty_bottle(meta:get_inventory())
 			else
