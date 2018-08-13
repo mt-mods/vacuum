@@ -25,10 +25,10 @@ local do_empty_bottle = function(inv)
 	if inv:room_for_item("main", new_stack) then
 		inv:remove_item("main", {name="vacuum:air_bottle", count=1})
 		inv:add_item("main", new_stack)
-		minetest.sound_play("vacuum_hiss", {pos = pos, gain = 0.5})
+		return true
 	end
 
-	return true
+	return false
 end
 
 local do_fill_bottle = function(inv)
@@ -41,10 +41,10 @@ local do_fill_bottle = function(inv)
 	if inv:room_for_item("main", new_stack) then
 		inv:remove_item("main", {name="vessels:steel_bottle", count=1})
 		inv:add_item("main", new_stack)
-		minetest.sound_play("vacuum_hiss", {pos = pos, gain = 0.5})
+		return true
 	end
 
-	return true
+	return false
 end
 
 -- just enabled
@@ -113,10 +113,12 @@ minetest.register_node("vacuum:airpump", {
 		action_on = function (pos, node)
 			local meta = minetest.get_meta(pos)
 			meta:set_int("enabled", 1)
+			update_infotext(meta)
 		end,
 		action_off = function (pos, node)
 			local meta = minetest.get_meta(pos)
 			meta:set_int("enabled", 0)
+			update_infotext(meta)
 		end
 	}},
 
@@ -182,11 +184,17 @@ minetest.register_abm({
 	action = function(pos)
 		local meta = minetest.get_meta(pos)
 		if vacuum.airpump_enabled(meta) then
+			local used = false
 			if vacuum.is_pos_in_space(pos) then
-				do_empty_bottle(meta:get_inventory())
+				used = do_empty_bottle(meta:get_inventory())
 			else
-				do_fill_bottle(meta:get_inventory())
+				used = do_fill_bottle(meta:get_inventory())
 			end
+
+			if used then
+				minetest.sound_play("vacuum_hiss", {pos = pos, gain = 0.5})
+			end
+
 			update_infotext(meta)
 		end
 	end
