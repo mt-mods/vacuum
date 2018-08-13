@@ -16,7 +16,7 @@ local has_empty_air_bottle = function(inv)
 end
 
 local do_empty_bottle = function(inv)
-	if not has_full_air_bottle then
+	if not has_full_air_bottle(inv) then
 		return false
 	end
 
@@ -32,7 +32,7 @@ local do_empty_bottle = function(inv)
 end
 
 local do_fill_bottle = function(inv)
-	if not has_empty_air_bottle then
+	if not has_empty_air_bottle(inv) then
 		return false
 	end
 
