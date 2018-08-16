@@ -138,9 +138,32 @@ minetest.register_node("vacuum:airpump", {
 	end,
 
 	can_dig = function(pos,player)
+		if player and player:is_player() and minetest.is_protected(pos, player:get_player_name()) then
+			-- protected
+			return false
+		end
+
 		local meta = minetest.get_meta(pos);
 		local inv = meta:get_inventory()
 		return inv:is_empty("main")
+	end,
+
+	allow_metadata_inventory_take = function(pos, listname, index, stack, player)
+		if player and player:is_player() and minetest.is_protected(pos, player:get_player_name()) then
+			-- protected
+			return 0
+		end
+
+		return stack:get_count()
+	end,
+
+	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
+		if player and player:is_player() and minetest.is_protected(pos, player:get_player_name()) then
+			-- protected
+			return 0
+		end
+
+		return stack:get_count()
 	end,
 
 	on_receive_fields = function(pos, formname, fields, sender)
