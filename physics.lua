@@ -102,7 +102,7 @@ minetest.register_abm({
 -- plants in vacuum
 minetest.register_abm({
         label = "space vacuum plants",
-	nodenames = {"group:sapling", "group:flora", "group:flower", "group:leafdecay"},
+	nodenames = {"group:sapling", "group:plant", "group:flora", "group:flower", "group:leafdecay"},
 	neighbors = {"vacuum:vacuum"},
 	interval = 1,
 	chance = 2,
