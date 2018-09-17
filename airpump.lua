@@ -87,7 +87,7 @@ local update_formspec = function(meta)
 		"button[0,1;8,1;toggle;" .. btnName .. "]" ..
 		"list[context;main;0,2;8,1;]" ..
 		"list[current_player;main;0,3.2;8,4;]" ..
-		"liststring[]" ..
+		"listring[]" ..
 		"")
 
 	update_infotext(meta)
