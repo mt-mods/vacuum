@@ -58,9 +58,6 @@ local drop_nodes = {
 	"group:wood",
 	"group:tree",
 	"group:mesecon",
-	"group:flower",
-	"group:sapling",
-	"group:flora"
 	-- TODO: maybe: group:dig_immediate
 }
 
