@@ -56,8 +56,12 @@ local drop_nodes = {
 	"default:dry_shrub",
 	"group:wool",
 	"group:wood",
-	"group:tree"
-	-- TODO: more nodes: button, switches, half slabs, .. drop everything!
+	"group:tree",
+	"group:mesecon",
+	"group:flower",
+	"group:sapling",
+	"group:flora"
+	-- TODO: maybe: group:dig_immediate
 }
 
 -- special drop cases
