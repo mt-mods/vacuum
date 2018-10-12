@@ -21,9 +21,9 @@ local do_empty_bottle = function(inv)
 	end
 
 	local new_stack = ItemStack("vessels:steel_bottle")
+	inv:remove_item("main", {name="vacuum:air_bottle", count=1})
 
 	if inv:room_for_item("main", new_stack) then
-		inv:remove_item("main", {name="vacuum:air_bottle", count=1})
 		inv:add_item("main", new_stack)
 		return true
 	end
@@ -37,9 +37,9 @@ local do_fill_bottle = function(inv)
 	end
 
 	local new_stack = ItemStack("vacuum:air_bottle")
+	inv:remove_item("main", {name="vessels:steel_bottle", count=1})
 
 	if inv:room_for_item("main", new_stack) then
-		inv:remove_item("main", {name="vessels:steel_bottle", count=1})
 		inv:add_item("main", new_stack)
 		return true
 	end
