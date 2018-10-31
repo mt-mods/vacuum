@@ -54,6 +54,7 @@ local drop_nodes = {
 	"default:ladder_wood",
 	"default:ladder_steel",
 	"default:dry_shrub",
+	"default:cactus",
 	"group:wool",
 	"group:wood",
 	"group:tree",
