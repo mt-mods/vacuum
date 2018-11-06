@@ -60,6 +60,8 @@ Hole from outside:
 
 ![](screenshots/screenshot_20180524_204132.png?raw=true)
 
+# Attributions
+* textures/vacuum_airpump* by ManElevation MIT (https://github.com/ManElevation/oxygenerators5.2)
 
 # History
 
