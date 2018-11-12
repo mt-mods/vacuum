@@ -208,7 +208,7 @@ minetest.register_abm({
 	chance = 1,
 	action = function(pos)
 		local meta = minetest.get_meta(pos)
-		if vacuum.airpump_enabled(meta) then
+		if vacuum.airpump_active(meta) then
 
 			minetest.add_particlespawner( 
 				12, --amount
