@@ -208,24 +208,7 @@ minetest.register_abm({
 	chance = 1,
 	action = function(pos)
 		local meta = minetest.get_meta(pos)
-		if vacuum.airpump_active(meta) then
-
-			minetest.add_particlespawner( 
-				12, --amount
-				4, --time
-				{x=pos.x-0.95, y=pos.y-0.95, z=pos.z-0.95},
-				{x=pos.x+0.95, y=pos.y+0.95, z=pos.z+0.95},
-				{x=-1.2, y=-1.2, z=-1.2}, 
-				{x=1.2, y=1.2, z=1.2}, 
-				{x=0,y=0,z=0}, 
-				{x=0,y=0,z=0},
-				0.5,
-				1, 
-				1, 
-				2,
-				false, 
-				"bubble.png"
-			)
+		if vacuum.airpump_enabled(meta) then
 
 			local used = false
 			if vacuum.is_pos_in_space(pos) then
@@ -236,6 +219,24 @@ minetest.register_abm({
 
 			if used then
 				minetest.sound_play("vacuum_hiss", {pos = pos, gain = 0.5})
+
+				minetest.add_particlespawner(
+	                                12, --amount
+	                                4, --time
+	                                {x=pos.x-0.95, y=pos.y-0.95, z=pos.z-0.95},
+	                                {x=pos.x+0.95, y=pos.y+0.95, z=pos.z+0.95},
+	                                {x=-1.2, y=-1.2, z=-1.2},
+	                                {x=1.2, y=1.2, z=1.2},
+	                                {x=0,y=0,z=0},
+	                                {x=0,y=0,z=0},
+	                                0.5,
+	                                1,
+	                                1,
+	                                2,
+	                                false,
+	                                "bubble.png"
+	                        )
+
 			end
 
 			update_infotext(meta)
