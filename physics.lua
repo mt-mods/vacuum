@@ -58,7 +58,7 @@ local drop_nodes = {
 	"group:wool",
 	"group:wood",
 	"group:tree",
-	"group:mesecon",
+	-- "group:mesecon", TODO: add hardcore setting for that one
 	-- TODO: maybe: group:dig_immediate
 }
 
