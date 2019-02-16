@@ -29,8 +29,8 @@ minetest.register_abm({
         label = "space vacuum",
 	nodenames = {"air"},
 	neighbors = {"vacuum:vacuum"},
-	interval = 1,
-	chance = 5,
+	interval = 2,
+	chance = 7,
 	action = function(pos)
 		if vacuum.is_pos_on_earth(pos) or near_powered_airpump(pos) then
 			-- on earth or near a powered airpump
@@ -76,8 +76,8 @@ minetest.register_abm({
         label = "space drop nodes",
 	nodenames = drop_nodes,
 	neighbors = {"vacuum:vacuum"},
-	interval = 2,
-	chance = 3,
+	interval = 3,
+	chance = 5,
 	action = function(pos)
 		local node = minetest.get_node(pos)
 		minetest.set_node(pos, {name = "vacuum:vacuum"})
@@ -102,8 +102,8 @@ minetest.register_abm({
 		"default:dirt_with_coniferous_litter"
 	},
 	neighbors = {"vacuum:vacuum"},
-	interval = 1,
-	chance = 2,
+	interval = 2,
+	chance = 3,
 	action = function(pos)
 		minetest.set_node(pos, {name = "default:gravel"})
 	end
@@ -114,8 +114,8 @@ minetest.register_abm({
         label = "space vacuum plants",
 	nodenames = {"group:sapling", "group:plant", "group:flora", "group:flower", "group:leafdecay"},
 	neighbors = {"vacuum:vacuum"},
-	interval = 1,
-	chance = 2,
+	interval = 3,
+	chance = 3,
 	action = function(pos)
 		minetest.set_node(pos, {name = "default:dry_shrub"})
 	end
@@ -128,8 +128,8 @@ minetest.register_abm({
         label = "space vacuum sublimate",
 	nodenames = {"group:snowy", "group:leaves", "group:water"},
 	neighbors = {"vacuum:vacuum"},
-	interval = 1,
-	chance = 2,
+	interval = 2,
+	chance = 3,
 	action = function(pos)
 		minetest.set_node(pos, {name = "vacuum:vacuum"})
 	end
@@ -142,8 +142,8 @@ minetest.register_abm({
         label = "space vacuum depressurize",
 	nodenames = leaky_nodes,
 	neighbors = {"vacuum:vacuum"},
-	interval = 1,
-	chance = 5,
+	interval = 2,
+	chance = 7,
 	action = function(pos)
 		if vacuum.is_pos_on_earth(pos) or near_powered_airpump(pos) then
 			-- on earth: TODO: replace vacuum with air
