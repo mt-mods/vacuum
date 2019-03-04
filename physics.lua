@@ -1,3 +1,10 @@
+local has_monitoring = minetest.get_modpath("monitoring")
+local metric_space_vacuum_abm
+
+if has_monitoring then
+ metric_space_vacuum_abm = monitoring.counter("metric_space_vacuum_abm_count",
+ 	"number of space vacuum abm calls")
+end
 
 -- air leaking nodes
 local leaky_nodes = {
@@ -32,6 +39,8 @@ minetest.register_abm({
 	interval = 2,
 	chance = 7,
 	action = function(pos)
+		if metric_space_vacuum_abm ~= nil then metric_space_vacuum_abm.inc() end
+
 		if vacuum.is_pos_on_earth(pos) or near_powered_airpump(pos) then
 			-- on earth or near a powered airpump
 			local node = minetest.find_node_near(pos, 1, {"vacuum:vacuum"})
@@ -171,5 +180,3 @@ minetest.register_abm({
 		end
 	end
 })
-
-
