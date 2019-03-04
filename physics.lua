@@ -2,7 +2,7 @@ local has_monitoring = minetest.get_modpath("monitoring")
 local metric_space_vacuum_abm
 
 if has_monitoring then
- metric_space_vacuum_abm = monitoring.counter("metric_space_vacuum_abm_count",
+ metric_space_vacuum_abm = monitoring.counter("vacuum_abm_count",
  	"number of space vacuum abm calls")
 end
 
