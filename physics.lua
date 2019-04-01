@@ -53,6 +53,9 @@ minetest.register_abm({
 	interval = 2,
 	chance = 7,
 	action = function(pos)
+    -- TODO: action = function(pos, node, active_object_count, active_object_count_wider)
+    -- use active_object_count_wider to prevent "flooding"
+
 		if metric_space_vacuum_abm ~= nil then metric_space_vacuum_abm.inc() end
 
 		if vacuum.is_pos_on_earth(pos) or near_powered_airpump(pos) then
