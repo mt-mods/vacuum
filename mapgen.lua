@@ -20,7 +20,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 			data[i] = c_vacuum
 		end
 	end
- 
+
 	vm:set_data(data)
 	vm:write_to_map()
 end)

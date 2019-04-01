@@ -210,7 +210,7 @@ minetest.register_abm({
 		local meta = minetest.get_meta(pos)
 		if vacuum.airpump_enabled(meta) then
 
-			local used = false
+			local used
 			if vacuum.is_pos_in_space(pos) then
 				used = do_empty_bottle(meta:get_inventory())
 			else
@@ -274,5 +274,3 @@ minetest.register_craft({
 		{"default:steel_ingot", "default:steelblock", "default:steel_ingot"},
 	},
 })
-
-

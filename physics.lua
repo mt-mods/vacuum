@@ -5,8 +5,7 @@ local has_mesecons_random = minetest.get_modpath("mesecons_random")
 local metric_space_vacuum_abm
 
 if has_monitoring then
- metric_space_vacuum_abm = monitoring.counter("vacuum_abm_count",
- 	"number of space vacuum abm calls")
+ metric_space_vacuum_abm = monitoring.counter("vacuum_abm_count", "number of space vacuum abm calls")
 end
 
 -- air leaking nodes
