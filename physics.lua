@@ -1,4 +1,7 @@
 local has_monitoring = minetest.get_modpath("monitoring")
+local has_technic = minetest.get_modpath("technic")
+local has_mesecons_random = minetest.get_modpath("mesecons_random")
+
 local metric_space_vacuum_abm
 
 if has_monitoring then
@@ -10,9 +13,19 @@ end
 local leaky_nodes = {
 	"group:door",
 	"group:soil",
-	"group:pipe", "group:tube",
-	"group:technic_lv_cable", "group:technic_mv_cable", "group:technic_hv_cable"
+	"group:pipe", "group:tube"
 }
+
+if has_mesecons_random then
+  table.insert(leaky_nodes, "mesecons_random:ghoststone_active")
+end
+
+if has_technic then
+  table.insert(leaky_nodes, "group:technic_lv_cable")
+  table.insert(leaky_nodes, "group:technic_mv_cable")
+  table.insert(leaky_nodes, "group:technic_hv_cable")
+end
+
 
 local near_powered_airpump = function(pos)
 	local pos1 = vector.subtract(pos, {x=vacuum.air_pump_range, y=vacuum.air_pump_range, z=vacuum.air_pump_range})
