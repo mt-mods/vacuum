@@ -1,5 +1,6 @@
 
 local c_vacuum = minetest.get_content_id("vacuum:vacuum")
+local c_ignore = minetest.get_content_id("ignore")
 local c_air = minetest.get_content_id("air")
 
 minetest.register_on_generated(function(minp, maxp, seed)
@@ -16,7 +17,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 		minp.x, minp.y, minp.z,
 		maxp.x, maxp.y, maxp.z
 	) do
-		if data[i] == c_air then
+		if data[i] == c_air or data[i] == c_ignore then
 			data[i] = c_vacuum
 		end
 	end
