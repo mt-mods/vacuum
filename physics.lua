@@ -2,6 +2,8 @@ local has_monitoring = minetest.get_modpath("monitoring")
 local has_technic = minetest.get_modpath("technic")
 local has_mesecons_random = minetest.get_modpath("mesecons_random")
 
+local throttle = dofile(MP .. "/util/throttle.lua")
+
 local metric_space_vacuum_abm
 local metric_space_vacuum_leak_abm
 
@@ -50,11 +52,9 @@ minetest.register_abm({
         label = "space vacuum",
 	nodenames = {"air"},
 	neighbors = {"vacuum:vacuum"},
-	interval = 2,
-	chance = 7,
-	action = function(pos)
-    -- TODO: action = function(pos, node, active_object_count, active_object_count_wider)
-    -- use active_object_count_wider to prevent "flooding"
+	interval = 1,
+	chance = 2,
+	action = throttle(100, function(pos)
 
 		if metric_space_vacuum_abm ~= nil then metric_space_vacuum_abm.inc() end
 
@@ -69,7 +69,7 @@ minetest.register_abm({
 			-- in space, evacuate air
 			minetest.set_node(pos, {name = "vacuum:vacuum"})
 		end
-	end
+	end)
 })
 
 -- weird behaving nodes in vacuum
@@ -102,9 +102,9 @@ minetest.register_abm({
         label = "space drop nodes",
 	nodenames = drop_nodes,
 	neighbors = {"vacuum:vacuum"},
-	interval = 3,
-	chance = 5,
-	action = function(pos)
+	interval = 1,
+	chance = 1,
+	action = throttle(100, function(pos)
 		local node = minetest.get_node(pos)
 		minetest.set_node(pos, {name = "vacuum:vacuum"})
 
@@ -112,7 +112,7 @@ minetest.register_abm({
 		if dropname then
 			minetest.add_item(pos, {name = dropname})
 		end
-	end
+	end)
 })
 
 -- various dirts in vacuum
@@ -128,11 +128,11 @@ minetest.register_abm({
 		"default:dirt_with_coniferous_litter"
 	},
 	neighbors = {"vacuum:vacuum"},
-	interval = 2,
-	chance = 3,
-	action = function(pos)
+	interval = 1,
+	chance = 1,
+	action = throttle(100, function(pos)
 		minetest.set_node(pos, {name = "default:gravel"})
-	end
+	end)
 })
 
 -- plants in vacuum
@@ -149,11 +149,11 @@ minetest.register_abm({
 		"ethereal:strawberry"
 	},
 	neighbors = {"vacuum:vacuum"},
-	interval = 3,
-	chance = 3,
-	action = function(pos)
+	interval = 1,
+	chance = 1,
+	action = throttle(100, function(pos)
 		minetest.set_node(pos, {name = "default:dry_shrub"})
-	end
+	end)
 })
 
 
@@ -163,11 +163,11 @@ minetest.register_abm({
         label = "space vacuum sublimate",
 	nodenames = {"group:snowy", "group:leaves", "group:water"},
 	neighbors = {"vacuum:vacuum"},
-	interval = 2,
-	chance = 3,
-	action = function(pos)
+	interval = 1,
+	chance = 1,
+	action = throttle(100, function(pos)
 		minetest.set_node(pos, {name = "vacuum:vacuum"})
-	end
+	end)
 })
 
 
@@ -178,8 +178,8 @@ minetest.register_abm({
 	nodenames = leaky_nodes,
 	neighbors = {"vacuum:vacuum"},
 	interval = 2,
-	chance = 7,
-	action = function(pos)
+	chance = 2,
+	action = throttle(50, function(pos)
     if metric_space_vacuum_leak_abm ~= nil then metric_space_vacuum_leak_abm.inc() end
 
 		if vacuum.is_pos_on_earth(pos) or near_powered_airpump(pos) then
@@ -206,5 +206,5 @@ minetest.register_abm({
 				minetest.set_node(surrounding_node, {name = "vacuum:vacuum"})
 			end
 		end
-	end
+	end)
 })
