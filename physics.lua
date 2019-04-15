@@ -54,7 +54,7 @@ minetest.register_abm({
 	neighbors = {"vacuum:vacuum"},
 	interval = 1,
 	chance = 2,
-	action = throttle(100, function(pos)
+	action = throttle(250, function(pos)
 
 		if metric_space_vacuum_abm ~= nil then metric_space_vacuum_abm.inc() end
 
