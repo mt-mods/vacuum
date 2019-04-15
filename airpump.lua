@@ -171,6 +171,11 @@ minetest.register_node("vacuum:airpump", {
 	on_receive_fields = function(pos, formname, fields, sender)
 		local meta = minetest.get_meta(pos);
 
+                if minetest.is_protected(pos, sender:get_player_name()) then
+                        -- not allowed
+                        return
+                end
+
 		if fields.toggle then
 			if meta:get_int("enabled") == 1 then
 				meta:set_int("enabled", 0)
