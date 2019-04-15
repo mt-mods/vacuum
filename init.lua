@@ -9,7 +9,7 @@ local MP = minetest.get_modpath("vacuum")
 
 dofile(MP.."/common.lua")
 dofile(MP.."/vacuum.lua")
-dofile(MP.."/air.lua")
+dofile(MP.."/compat.lua")
 dofile(MP.."/airbottle.lua")
 dofile(MP.."/airpump.lua")
 dofile(MP.."/mapgen.lua")
