@@ -17,7 +17,7 @@ local function throttle(callspersecond, fn)
 			end
 		end
 
-		return call(fn, arg)
+		return pcall(fn, ...)
 	end
 
 end

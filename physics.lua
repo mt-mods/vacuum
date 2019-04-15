@@ -55,7 +55,7 @@ minetest.register_abm({
 	neighbors = {"vacuum:vacuum"},
 	interval = 1,
 	chance = 2,
-	action = throttle(250, function(pos)
+	action = throttle(1000, function(pos)
 
 		if metric_space_vacuum_abm ~= nil then metric_space_vacuum_abm.inc() end
 
@@ -180,7 +180,7 @@ minetest.register_abm({
 	neighbors = {"vacuum:vacuum"},
 	interval = 2,
 	chance = 2,
-	action = throttle(50, function(pos)
+	action = throttle(250, function(pos)
     if metric_space_vacuum_leak_abm ~= nil then metric_space_vacuum_leak_abm.inc() end
 
 		if vacuum.is_pos_on_earth(pos) or near_powered_airpump(pos) then
