@@ -2,6 +2,7 @@ local has_monitoring = minetest.get_modpath("monitoring")
 local has_technic = minetest.get_modpath("technic")
 local has_mesecons_random = minetest.get_modpath("mesecons_random")
 
+local MP = minetest.get_modpath("vacuum")
 local throttle = dofile(MP .. "/util/throttle.lua")
 
 local metric_space_vacuum_abm
