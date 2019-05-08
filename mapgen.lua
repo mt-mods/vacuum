@@ -4,6 +4,7 @@ local c_ignore = minetest.get_content_id("ignore")
 local c_air = minetest.get_content_id("air")
 
 minetest.register_on_generated(function(minp, maxp, seed)
+	--local t0 = minetest.get_us_time()
 
 	if not vacuum.is_mapgen_block_in_space(minp, maxp) then
 		return
@@ -24,4 +25,9 @@ minetest.register_on_generated(function(minp, maxp, seed)
 
 	vm:set_data(data)
 	vm:write_to_map()
+
+	--local t1 = minetest.get_us_time()
+	--local micros = t1 -t0
+
+	--print("mapgen for " .. minetest.pos_to_string(minp) .. " took " .. micros .. " us")
 end)
