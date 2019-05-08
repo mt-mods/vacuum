@@ -50,7 +50,7 @@ end
 
 -- vacuum/air propagation
 minetest.register_abm({
-        label = "space vacuum",
+  label = "space vacuum",
 	nodenames = {"air"},
 	neighbors = {"vacuum:vacuum"},
 	interval = 1,
@@ -59,14 +59,18 @@ minetest.register_abm({
 
 		if metric_space_vacuum_abm ~= nil then metric_space_vacuum_abm.inc() end
 
-		if vacuum.is_pos_on_earth(pos) or near_powered_airpump(pos) then
+    if vacuum.no_vacuum_abm(pos) then
+      return
+    end
+
+		if not vacuum.is_pos_in_space(pos) or near_powered_airpump(pos) then
 			-- on earth or near a powered airpump
 			local node = minetest.find_node_near(pos, 1, {"vacuum:vacuum"})
 
 			if node ~= nil then
 				minetest.set_node(node, {name = "air"})
 			end
-		elseif vacuum.is_pos_in_space(pos) then
+		else
 			-- in space, evacuate air
 			minetest.set_node(pos, {name = "vacuum:vacuum"})
 		end
@@ -183,10 +187,10 @@ minetest.register_abm({
 	action = throttle(250, function(pos)
     if metric_space_vacuum_leak_abm ~= nil then metric_space_vacuum_leak_abm.inc() end
 
-		if vacuum.is_pos_on_earth(pos) or near_powered_airpump(pos) then
+		if not vacuum.is_pos_in_space(pos) or near_powered_airpump(pos) then
 			-- on earth: TODO: replace vacuum with air
 			return
-		elseif vacuum.is_pos_in_space(pos) then
+		else
 			local node = minetest.get_node(pos)
 
 			if node.name == "pipeworks:entry_panel_empty" or node.name == "pipeworks:entry_panel_loaded" then
