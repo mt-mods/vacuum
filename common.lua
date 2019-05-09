@@ -11,8 +11,3 @@ end
 vacuum.no_vacuum_abm = function(pos)
 	return pos.y > vacuum.space_height - 40 and pos.y < vacuum.space_height + 40
 end
-
--- checks if this mapblock is in space when generated
-vacuum.is_mapgen_block_in_space = function(minp, maxp)
-	return minp.y > vacuum.space_height
-end
