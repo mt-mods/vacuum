@@ -54,6 +54,6 @@ minetest.register_on_generated(function(minp, maxp, seed)
 	local micros = t1 -t0
 
 	if vacuum.profile_mapgen then
-		print("mapgen for " .. minetest.pos_to_string(minp) .. " took " .. micros .. " us")
+		print("[vacuum] mapgen for " .. minetest.pos_to_string(minp) .. " took " .. micros .. " us")
 	end
 end)
