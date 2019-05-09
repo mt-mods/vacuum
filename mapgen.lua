@@ -28,7 +28,7 @@ local check_corners_in_space = function(minp, maxp)
 end
 
 minetest.register_on_generated(function(minp, maxp, seed)
-	--local t0 = minetest.get_us_time()
+	local t0 = minetest.get_us_time()
 
 	if not check_corners_in_space(minp, maxp) then
 		return
@@ -50,8 +50,10 @@ minetest.register_on_generated(function(minp, maxp, seed)
 	vm:set_data(data)
 	vm:write_to_map()
 
-	--local t1 = minetest.get_us_time()
-	--local micros = t1 -t0
+	local t1 = minetest.get_us_time()
+	local micros = t1 -t0
 
-	--print("mapgen for " .. minetest.pos_to_string(minp) .. " took " .. micros .. " us")
+	if vacuum.profile_mapgen then
+		print("mapgen for " .. minetest.pos_to_string(minp) .. " took " .. micros .. " us")
+	end
 end)

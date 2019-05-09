@@ -1,7 +1,8 @@
 
 vacuum = {
 	space_height = tonumber(minetest.settings:get("vacuum.space_height")) or 1000,
-	air_pump_range = tonumber(minetest.settings:get("vacuum.air_pump_range")) or 5
+	air_pump_range = tonumber(minetest.settings:get("vacuum.air_pump_range")) or 5,
+	profile_mapgen = minetest.settings:get("vacuum.profile_mapgen")
 }
 
 
@@ -17,6 +18,3 @@ dofile(MP.."/physics.lua")
 dofile(MP.."/dignode.lua")
 
 print("[OK] Vacuum")
-
-
-
