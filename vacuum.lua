@@ -13,7 +13,7 @@ minetest.register_node("vacuum:vacuum", {
 	alpha = 0.1,
 	groups = {not_in_creative_inventory=1, not_blocking_trains=1, cools_lava=1},
 	paramtype = "light",
-	light_source = minetest.LIGHT_MAX,-- TOOD: test
+	-- light_source = minetest.LIGHT_MAX,-- TOOD: test
 	drop = {},
 	sunlight_propagates = true
 })

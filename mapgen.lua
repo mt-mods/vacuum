@@ -48,6 +48,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 	end
 
 	vm:set_data(data)
+	vm:set_lighting({day=15, night=0})
 	vm:write_to_map()
 
 	local t1 = minetest.get_us_time()
