@@ -210,7 +210,7 @@ minetest.register_abm({
 			if surrounding_node ~= nil then
         if vacuum.debug then
           -- debug mode, set
-          minetest.set_node(surrounding_node, {name = "wool:red"})
+          minetest.set_node(surrounding_node, {name = "default:cobble"})
         else
           -- normal case
 				  minetest.set_node(surrounding_node, {name = "vacuum:vacuum"})
