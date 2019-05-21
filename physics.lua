@@ -208,7 +208,13 @@ minetest.register_abm({
 			local surrounding_node = minetest.find_node_near(pos, 1, {"air"})
 
 			if surrounding_node ~= nil then
-				minetest.set_node(surrounding_node, {name = "vacuum:vacuum"})
+        if vacuum.debug then
+          -- debug mode, set
+          minetest.set_node(surrounding_node, {name = "wool:red"})
+        else
+          -- normal case
+				  minetest.set_node(surrounding_node, {name = "vacuum:vacuum"})
+        end
 			end
 		end
 	end)
