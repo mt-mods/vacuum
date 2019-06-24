@@ -110,6 +110,11 @@ minetest.register_abm({
 	interval = 1,
 	chance = 1,
 	action = throttle(100, function(pos)
+
+		if not vacuum.is_pos_in_space(pos) or near_powered_airpump(pos) then
+			return
+		end
+
 		local node = minetest.get_node(pos)
 		minetest.set_node(pos, {name = "vacuum:vacuum"})
 
