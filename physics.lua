@@ -54,14 +54,14 @@ minetest.register_abm({
 	nodenames = {"air"},
 	neighbors = {"vacuum:vacuum"},
 	interval = 1,
-	chance = 2,
+	chance = 1,
 	action = throttle(1000, function(pos)
 
 		if metric_space_vacuum_abm ~= nil then metric_space_vacuum_abm.inc() end
 
-    if vacuum.no_vacuum_abm(pos) then
-      return
-    end
+		if vacuum.no_vacuum_abm(pos) then
+			return
+		end
 
 		if not vacuum.is_pos_in_space(pos) or near_powered_airpump(pos) then
 			-- on earth or near a powered airpump
@@ -194,7 +194,7 @@ minetest.register_abm({
 	interval = 2,
 	chance = 2,
 	action = throttle(250, function(pos)
-    if metric_space_vacuum_leak_abm ~= nil then metric_space_vacuum_leak_abm.inc() end
+		if metric_space_vacuum_leak_abm ~= nil then metric_space_vacuum_leak_abm.inc() end
 
 		if not vacuum.is_pos_in_space(pos) or near_powered_airpump(pos) then
 			-- on earth: TODO: replace vacuum with air
