@@ -25,9 +25,9 @@ if has_mesecons_random then
 end
 
 if has_technic then
-  table.insert(leaky_nodes, "group:technic_lv_cable")
-  table.insert(leaky_nodes, "group:technic_mv_cable")
-  table.insert(leaky_nodes, "group:technic_hv_cable")
+  table.insert(leaky_nodes, "technic:lv_cable")
+  table.insert(leaky_nodes, "technic:mv_cable")
+  table.insert(leaky_nodes, "technic:hv_cable")
 end
 
 
