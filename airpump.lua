@@ -228,15 +228,20 @@ minetest.register_abm({
 		local meta = minetest.get_meta(pos)
 		if vacuum.airpump_enabled(meta) then
 
+			-- The spacesuit mod must be loaded after this mod, so we can't check at the start.
+			local has_spacesuit = minetest.get_modpath("spacesuit")
 			local used
 			if vacuum.is_pos_in_space(pos) then
 				used = do_empty_bottle(meta:get_inventory())
+				if used and has_spacesuit then
+					do_repair_spacesuit(meta:get_inventory())
+				end
 			else
-				used = do_fill_bottle(meta:get_inventory())
-				-- The spacesuit mod must be loaded after this mod, so we can't check at the start.
-				local has_spacesuit = minetest.get_modpath("spacesuit")
 				if has_spacesuit then
-					used = used or do_repair_spacesuit(meta:get_inventory())
+					used = do_repair_spacesuit(meta:get_inventory())
+				end
+				if not used then
+					used = do_fill_bottle(meta:get_inventory())
 				end
 			end
 
