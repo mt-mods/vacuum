@@ -48,18 +48,13 @@ local do_fill_bottle = function(inv)
 end
 
 local do_repair_spacesuit = function(inv)
-	local part_names = {"spacesuit:helmet", "spacesuit:chestplate", "spacesuit:pants", "spacesuit:boots"}
 	for i = 1, inv:get_size("main") do
 		local stack = inv:get_stack("main", i)
-		if stack:get_wear() > 0 then
-			local stack_name = stack:get_name()
-			for _, part_name in ipairs(part_names) do
-				if stack_name == part_name then
-					stack:set_wear(0)
-					inv:set_stack("main", i, stack)
-					return true
-				end
-			end
+		local item_def = minetest.registered_items[stack:get_name()]
+		if item_def and item_def.wear_represents == "spacesuit_wear" and stack:get_wear() > 0 then
+			stack:set_wear(0)
+			inv:set_stack("main", i, stack)
+			return true
 		end
 	end
 	return false
