@@ -48,18 +48,13 @@ local do_fill_bottle = function(inv)
 end
 
 local do_repair_spacesuit = function(inv)
-	local part_names = {"spacesuit:helmet", "spacesuit:chestplate", "spacesuit:pants", "spacesuit:boots"}
 	for i = 1, inv:get_size("main") do
 		local stack = inv:get_stack("main", i)
-		if stack:get_wear() > 0 then
-			local stack_name = stack:get_name()
-			for _, part_name in ipairs(part_names) do
-				if stack_name == part_name then
-					stack:set_wear(0)
-					inv:set_stack("main", i, stack)
-					return true
-				end
-			end
+		local item_def = minetest.registered_items[stack:get_name()]
+		if item_def and item_def.wear_represents == "spacesuit_wear" and stack:get_wear() > 0 then
+			stack:set_wear(0)
+			inv:set_stack("main", i, stack)
+			return true
 		end
 	end
 	return false
@@ -233,15 +228,20 @@ minetest.register_abm({
 		local meta = minetest.get_meta(pos)
 		if vacuum.airpump_enabled(meta) then
 
+			-- The spacesuit mod must be loaded after this mod, so we can't check at the start.
+			local has_spacesuit = minetest.get_modpath("spacesuit")
 			local used
 			if vacuum.is_pos_in_space(pos) then
 				used = do_empty_bottle(meta:get_inventory())
+				if used and has_spacesuit then
+					do_repair_spacesuit(meta:get_inventory())
+				end
 			else
-				used = do_fill_bottle(meta:get_inventory())
-				-- The spacesuit mod must be loaded after this mod, so we can't check at the start.
-				local has_spacesuit = minetest.get_modpath("spacesuit")
 				if has_spacesuit then
-					used = used or do_repair_spacesuit(meta:get_inventory())
+					used = do_repair_spacesuit(meta:get_inventory())
+				end
+				if not used then
+					used = do_fill_bottle(meta:get_inventory())
 				end
 			end
 
