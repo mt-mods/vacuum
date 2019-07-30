@@ -94,15 +94,6 @@ local drop_nodes = {
 	-- TODO: maybe: group:dig_immediate
 }
 
--- special drop cases
-local get_drop_name = function(name)
-	if name == "default:torch_wall" or name == "default:torch_ceiling" then
-		return "default:torch"
-	else
-		return name
-	end
-end
-
 -- weird nodes in vacuum
 minetest.register_abm({
         label = "space drop nodes",
@@ -119,9 +110,8 @@ minetest.register_abm({
 		local node = minetest.get_node(pos)
 		minetest.set_node(pos, {name = "vacuum:vacuum"})
 
-		local dropname = get_drop_name(node.name)
-		if dropname then
-			minetest.add_item(pos, {name = dropname})
+		for _, drop in pairs(minetest.get_node_drops(node.name)) do
+			minetest.add_item(pos, ItemStack(drop))
 		end
 	end)
 })
