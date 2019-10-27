@@ -94,6 +94,16 @@ local drop_nodes = {
 	-- TODO: maybe: group:dig_immediate
 }
 
+local function get_node_drops(node)
+	if node.name == "default:papyrus" then
+		if math.random(3) == 1 then
+			return {"default:paper"}
+		end
+		return {}
+	end
+	return minetest.get_node_drops(node)
+end
+
 -- weird nodes in vacuum
 minetest.register_abm({
         label = "space drop nodes",
@@ -110,7 +120,7 @@ minetest.register_abm({
 		local node = minetest.get_node(pos)
 		minetest.set_node(pos, {name = "vacuum:vacuum"})
 
-		for _, drop in pairs(minetest.get_node_drops(node.name)) do
+		for _, drop in pairs(get_node_drops(node)) do
 			minetest.add_item(pos, ItemStack(drop))
 		end
 	end)
