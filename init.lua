@@ -9,6 +9,10 @@ vacuum = {
 
 local MP = minetest.get_modpath("vacuum")
 
+if minetest.get_modpath("digilines") then
+	dofile(MP.."/digilines.lua")
+end
+
 dofile(MP.."/common.lua")
 dofile(MP.."/vacuum.lua")
 dofile(MP.."/compat.lua")
@@ -23,5 +27,7 @@ dofile(MP.."/dignode.lua")
 if minetest.get_modpath("spacesuit") then
 	dofile(MP.."/spacesuit.lua")
 end
+
+
 
 print("[OK] Vacuum")

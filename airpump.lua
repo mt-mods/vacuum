@@ -78,6 +78,13 @@ minetest.register_node("vacuum:airpump", {
 		end
 	}},
 
+	digiline = {
+		receptor = {action = function() end},
+		effector = {
+			action = vacuum.airpump_digiline_effector
+		},
+	},
+
 	after_place_node = function(pos, placer)
 		local meta = minetest.get_meta(pos)
 		meta:set_string("owner", placer:get_player_name() or "")

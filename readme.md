@@ -36,15 +36,28 @@ Vacuum exposure on nodes:
 
 Optional dependencies:
 * Mesecon interaction (enable/disable airpump)
+* Digilines
 * Pipeworks
+* Spacesuit
 
 Tested mods:
 * digtron
 * technic (quarry, solar)
 
-# Crafting
+# Digilines
 
-TODO
+The airpump can be operated with the `digilines` mod:
+
+```lua
+-- flush room
+digiline_send("airpump", { command="flush" })
+
+-- enable pump
+digiline_send("airpump", { command="enable" })
+
+-- disable pump
+digiline_send("airpump", { command="disable" })
+```
 
 # Screenshots
 
@@ -62,10 +75,3 @@ Hole from outside:
 
 # Attributions
 * textures/vacuum_airpump* by ManElevation MIT (https://github.com/ManElevation/oxygenerators5.2)
-
-# History
-
-## Version 0.1
-* Initial release
-
-
