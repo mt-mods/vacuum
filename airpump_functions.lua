@@ -81,7 +81,7 @@ local c_air = minetest.get_content_id("air")
 vacuum.flush_airpump = function(pos)
 	minetest.sound_play("vacuum_hiss", {pos = pos, gain = 0.5})
 
-	local range = {x=32,y=32,z=32}
+	local range = {x=16,y=16,z=16}
 	local pos1 = vector.subtract(pos, range)
 	local pos2 = vector.add(pos, range)
 
