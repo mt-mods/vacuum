@@ -20,4 +20,8 @@ dofile(MP.."/mapgen.lua")
 dofile(MP.."/physics.lua")
 dofile(MP.."/dignode.lua")
 
+if minetest.get_modpath("spacesuit") then
+	dofile(MP.."/spacesuit.lua")
+end
+
 print("[OK] Vacuum")
