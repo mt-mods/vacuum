@@ -248,23 +248,22 @@ minetest.register_abm({
 			if used then
 				minetest.sound_play("vacuum_hiss", {pos = pos, gain = 0.5})
 
-				minetest.add_particlespawner(
-	                                12, --amount
-	                                4, --time
-	                                {x=pos.x-0.95, y=pos.y-0.95, z=pos.z-0.95},
-	                                {x=pos.x+0.95, y=pos.y+0.95, z=pos.z+0.95},
-	                                {x=-1.2, y=-1.2, z=-1.2},
-	                                {x=1.2, y=1.2, z=1.2},
-	                                {x=0,y=0,z=0},
-	                                {x=0,y=0,z=0},
-	                                0.5,
-	                                1,
-	                                1,
-	                                2,
-	                                false,
-	                                "bubble.png"
-	                        )
-
+				minetest.add_particlespawner({
+					amount = 12,
+					time = 4,
+					minpos = vector.subtract(pos, 0.95),
+					maxpos = vector.add(pos, 0.95),
+					minvel = {x=-1.2, y=-1.2, z=-1.2},
+					maxvel = {x=1.2, y=1.2, z=1.2},
+					minacc = {x=0, y=0, z=0},
+					maxacc = {x=0, y=0, z=0},
+					minexptime = 0.5,
+					maxexptime = 1,
+					minsize = 1,
+					maxsize = 2,
+					vertical = false,
+					texture = "bubble.png"
+				})
 			end
 
 			update_infotext(meta)
