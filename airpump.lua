@@ -35,7 +35,10 @@ local update_formspec = function(meta)
 	meta:set_string("formspec", "size[8,7.2;]" ..
 		"image[3,0;1,1;" .. vacuum.air_bottle_image .. "]" ..
 		"image[4,0;1,1;vessels_steel_bottle.png]" ..
-		"button[0,1;8,1;toggle;" .. btnName .. "]" ..
+
+		"button[0,1;4,1;toggle;" .. btnName .. "]" ..
+		"button[4,1;4,1:flush;Flush room]" ..
+
 		"list[context;main;0,2;8,1;]" ..
 		"list[current_player;main;0,3.2;8,4;]" ..
 		"listring[]" ..
@@ -123,9 +126,20 @@ minetest.register_node("vacuum:airpump", {
 		local meta = minetest.get_meta(pos);
 
     if minetest.is_protected(pos, sender:get_player_name()) then
-            -- not allowed
-            return
+      -- not allowed
+      return
     end
+
+		if fields.flush then
+			if not vacuum.can_flush_airpump(pos) then
+				minetest.chat_send_player(
+					sender:get_player_name(),
+					"[airpump] Flush mode needs a stack of full air bottles, aborting!"
+				)
+			else
+				vacuum.flush_airpump(pos)
+			end
+		end
 
 		if fields.toggle then
 			if meta:get_int("enabled") == 1 then

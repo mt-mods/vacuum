@@ -44,7 +44,6 @@ vacuum.do_fill_bottle = function(inv)
 end
 
 
-
 vacuum.do_repair_spacesuit = function(inv)
 	for i = 1, inv:get_size("main") do
 		local stack = inv:get_stack("main", i)
@@ -67,4 +66,45 @@ end
 vacuum.airpump_active = function(meta)
 	local inv = meta:get_inventory()
 	return vacuum.airpump_enabled(meta) and vacuum.has_full_air_bottle(inv)
+end
+
+vacuum.can_flush_airpump = function(pos)
+	local meta = minetest.get_meta(pos)
+	local inv = meta:get_inventory()
+	return inv:contains_item("main", {name="vacuum:air_bottle", count=99})
+end
+
+local c_vacuum = minetest.get_content_id("vacuum:vacuum")
+local c_air = minetest.get_content_id("air")
+
+-- flushes the room of the airpump with air
+vacuum.flush_airpump = function(pos)
+	local range = {x=32,y=32,z=32}
+	local pos1 = vector.subtract(pos, range)
+	local pos2 = vector.add(pos, range)
+
+	local manip = minetest.get_voxel_manip()
+	local e1, e2 = manip:read_from_map(pos1, pos2)
+	local area = VoxelArea:new({MinEdge=e1, MaxEdge=e2})
+	local data = manip:get_data()
+
+	for z=pos1.z, pos2.z do
+	for y=pos1.y, pos2.y do
+	for x=pos1.x, pos2.x do
+
+		local index = area:index(x, y, z)
+		if data[index] == c_vacuum then
+			data[index] = c_air
+		end
+
+	end
+	end
+	end
+
+	manip:set_data(data)
+	manip:write_to_map()
+
+	local meta = minetest.get_meta(pos)
+	local inv = meta:get_inventory()
+	inv:remove_item("main", {name="vacuum:air_bottle", count=99})
 end
