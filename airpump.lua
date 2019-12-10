@@ -37,7 +37,7 @@ local update_formspec = function(meta)
 		"image[4,0;1,1;vessels_steel_bottle.png]" ..
 
 		"button[0,1;4,1;toggle;" .. btnName .. "]" ..
-		"button[4,1;4,1:flush;Flush room]" ..
+		"button[4,1;4,1;flush;Flush room]" ..
 
 		"list[context;main;0,2;8,1;]" ..
 		"list[current_player;main;0,3.2;8,4;]" ..
