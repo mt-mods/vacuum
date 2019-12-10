@@ -7,69 +7,7 @@ if has_pipeworks then
 	tube_entry = "^pipeworks_tube_connection_wooden.png"
 end
 
-local has_full_air_bottle = function(inv)
-	return inv:contains_item("main", {name="vacuum:air_bottle", count=1})
-end
 
-local has_empty_air_bottle = function(inv)
-	return inv:contains_item("main", {name="vessels:steel_bottle", count=1})
-end
-
-local do_empty_bottle = function(inv)
-	if not has_full_air_bottle(inv) then
-		return false
-	end
-
-	local new_stack = ItemStack("vessels:steel_bottle")
-	inv:remove_item("main", {name="vacuum:air_bottle", count=1})
-
-	if inv:room_for_item("main", new_stack) then
-		inv:add_item("main", new_stack)
-		return true
-	end
-
-	return false
-end
-
-local do_fill_bottle = function(inv)
-	if not has_empty_air_bottle(inv) then
-		return false
-	end
-
-	local new_stack = ItemStack("vacuum:air_bottle")
-	inv:remove_item("main", {name="vessels:steel_bottle", count=1})
-
-	if inv:room_for_item("main", new_stack) then
-		inv:add_item("main", new_stack)
-		return true
-	end
-
-	return false
-end
-
-local do_repair_spacesuit = function(inv)
-	for i = 1, inv:get_size("main") do
-		local stack = inv:get_stack("main", i)
-		local item_def = minetest.registered_items[stack:get_name()]
-		if item_def and item_def.wear_represents == "spacesuit_wear" and stack:get_wear() > 0 then
-			stack:set_wear(0)
-			inv:set_stack("main", i, stack)
-			return true
-		end
-	end
-	return false
-end
-
--- just enabled
-vacuum.airpump_enabled = function(meta)
-	return meta:get_int("enabled") == 1
-end
-
--- enabled and actively pumping
-vacuum.airpump_active = function(meta)
-	local inv = meta:get_inventory()
-	return vacuum.airpump_enabled(meta) and has_full_air_bottle(inv)
-end
 
 
 local update_infotext = function(meta)
@@ -184,10 +122,10 @@ minetest.register_node("vacuum:airpump", {
 	on_receive_fields = function(pos, formname, fields, sender)
 		local meta = minetest.get_meta(pos);
 
-                if minetest.is_protected(pos, sender:get_player_name()) then
-                        -- not allowed
-                        return
-                end
+    if minetest.is_protected(pos, sender:get_player_name()) then
+            -- not allowed
+            return
+    end
 
 		if fields.toggle then
 			if meta:get_int("enabled") == 1 then
@@ -218,80 +156,6 @@ minetest.register_node("vacuum:airpump", {
 
 })
 
-
-minetest.register_abm({
-        label = "airpump",
-	nodenames = {"vacuum:airpump"},
-	interval = 5,
-	chance = 1,
-	action = function(pos)
-		local meta = minetest.get_meta(pos)
-		if vacuum.airpump_enabled(meta) then
-
-			-- The spacesuit mod must be loaded after this mod, so we can't check at the start.
-			local has_spacesuit = minetest.get_modpath("spacesuit")
-			local used
-			if vacuum.is_pos_in_space(pos) then
-				used = do_empty_bottle(meta:get_inventory())
-				if used and has_spacesuit then
-					do_repair_spacesuit(meta:get_inventory())
-				end
-			else
-				if has_spacesuit then
-					used = do_repair_spacesuit(meta:get_inventory())
-				end
-				if not used then
-					used = do_fill_bottle(meta:get_inventory())
-				end
-			end
-
-			if used then
-				minetest.sound_play("vacuum_hiss", {pos = pos, gain = 0.5})
-
-				minetest.add_particlespawner({
-					amount = 12,
-					time = 4,
-					minpos = vector.subtract(pos, 0.95),
-					maxpos = vector.add(pos, 0.95),
-					minvel = {x=-1.2, y=-1.2, z=-1.2},
-					maxvel = {x=1.2, y=1.2, z=1.2},
-					minacc = {x=0, y=0, z=0},
-					maxacc = {x=0, y=0, z=0},
-					minexptime = 0.5,
-					maxexptime = 1,
-					minsize = 1,
-					maxsize = 2,
-					vertical = false,
-					texture = "bubble.png"
-				})
-			end
-
-			update_infotext(meta)
-		end
-	end
-})
-
-
-
--- initial airpump step
-minetest.register_abm({
-        label = "airpump seed",
-	nodenames = {"vacuum:airpump"},
-	neighbors = {"vacuum:vacuum"},
-	interval = 1,
-	chance = 1,
-	action = function(pos)
-		local meta = minetest.get_meta(pos)
-		if vacuum.airpump_active(meta) then
-			-- seed initial air
-			local node = minetest.find_node_near(pos, 1, {"vacuum:vacuum"})
-
-			if node ~= nil then
-				minetest.set_node(node, {name = "air"})
-			end
-		end
-	end
-})
 
 minetest.register_craft({
 	output = "vacuum:airpump",
