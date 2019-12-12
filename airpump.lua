@@ -141,7 +141,7 @@ minetest.register_node("vacuum:airpump", {
 			if not vacuum.can_flush_airpump(pos) then
 				minetest.chat_send_player(
 					sender:get_player_name(),
-					"[airpump] Flush mode needs a stack of full air bottles, aborting!"
+					"[airpump] Flush mode needs " .. vacuum.flush_bottle_usage .. " full air bottles, aborting!"
 				)
 			else
 				vacuum.flush_airpump(pos)

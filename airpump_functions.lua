@@ -71,7 +71,7 @@ end
 vacuum.can_flush_airpump = function(pos)
 	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
-	return inv:contains_item("main", {name="vacuum:air_bottle", count=99})
+	return inv:contains_item("main", {name="vacuum:air_bottle", count=vacuum.flush_bottle_usage})
 end
 
 local c_vacuum = minetest.get_content_id("vacuum:vacuum")
@@ -108,5 +108,6 @@ vacuum.flush_airpump = function(pos)
 
 	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
-	inv:remove_item("main", {name="vacuum:air_bottle", count=99})
+	inv:remove_item("main", {name="vacuum:air_bottle", count=vacuum.flush_bottle_usage})
+	inv:add_item("main", ItemStack("vessels:steel_bottle " .. vacuum.flush_bottle_usage))
 end
