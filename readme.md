@@ -11,7 +11,7 @@ Vacuum implementation and blocks for pumping and detection of vacuum and air
 The space/vacuum starts at 1000 blocks in the y axis (hardcoded in init.lua)
 
 The mod defines an airlike **vacuum:vacuum** block which suffocates the player (with drowning=1).
-An [spacesuit](https://git.rudin.io/minetest/spacesuit) or similar would help to survive in space.
+A [spacesuit](https://github.com/mt-mods/spacesuit) or similar would help to survive in space.
 
 Air can be pumped in to any closed structure with an airpump (vacuum:airpump).
 the airpump needs air-bottles to work in vaccum. Air-bottles can be filled with an airpump on the ground.
@@ -58,20 +58,6 @@ digiline_send("airpump", { command="enable" })
 -- disable pump
 digiline_send("airpump", { command="disable" })
 ```
-
-# Screenshots
-
-Air pump:
-
-![](screenshots/screenshot_20180524_204035.png?raw=true)
-
-Hole in the structure (leaking air):
-
-![](screenshots/screenshot_20180524_204042.png?raw=true)
-
-Hole from outside:
-
-![](screenshots/screenshot_20180524_204132.png?raw=true)
 
 # Contributors
 
