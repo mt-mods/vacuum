@@ -1,5 +1,5 @@
 
-local function throttle(callspersecond, fn)
+function vacuum.throttle(callspersecond, fn)
 	local time = 0
 	local count = 0
 
@@ -21,6 +21,3 @@ local function throttle(callspersecond, fn)
 	end
 
 end
-
-
-return throttle

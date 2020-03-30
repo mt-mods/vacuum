@@ -63,5 +63,11 @@ digiline_send("airpump", { command="disable" })
 
 * @Coil0 (various fixes)
 
+# Settings
+
+* `vacuum.disable_physics` if set, disables all abm-physics
+* `vacuum.disable_mapgen` if set, disables the vacuum mapgen
+* `vacuum.debug` enable debug mode (cobblestone gets placed on leaks)
+
 # Attributions
 * textures/vacuum_airpump* by ManElevation MIT (https://github.com/ManElevation/oxygenerators5.2)
