@@ -19,12 +19,12 @@ end
 
 local check_corners_in_space = function(minp, maxp)
 	for _, pos in ipairs(get_corners(minp, maxp)) do
-		if vacuum.is_pos_in_space(pos) then
-			return true
+		if not vacuum.is_pos_in_space(pos) then
+			return false
 		end
 	end
 
-	return false
+	return true
 end
 
 minetest.register_on_generated(function(minp, maxp, seed)
