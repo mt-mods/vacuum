@@ -12,7 +12,7 @@ minetest.register_abm({
 	nodenames = {"air"},
 	neighbors = {"vacuum:vacuum"},
 	interval = 1,
-	chance = 3,
+	chance = 1,
 	action = vacuum.throttle(1000, function(pos)
 
 		if metric_space_vacuum_abm ~= nil then metric_space_vacuum_abm.inc() end
