@@ -1,9 +1,10 @@
-Minetest vacuum
-======
+# Minetest vacuum
+
+[![luacheck](https://github.com/mt-mods/vacuum/workflows/luacheck/badge.svg)](https://github.com/mt-mods/vacuum/actions)
 
 Vacuum implementation and blocks for pumping and detection of vacuum and air
 
-* Github: [https://github.com/thomasrudin-mt/vacuum](https://github.com/thomasrudin-mt/vacuum)
+* Github: [https://github.com/mt-mods/vacuum](https://github.com/mt-mods/vacuum)
 * Forum topic: [https://forum.minetest.net/viewtopic.php?f=9&t=20195](https://forum.minetest.net/viewtopic.php?f=9&t=20195)
 
 # Operation
