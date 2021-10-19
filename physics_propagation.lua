@@ -13,6 +13,7 @@ minetest.register_abm({
 	neighbors = {"vacuum:vacuum"},
 	interval = 1,
 	chance = 1,
+	min_y = vacuum.space_height,
 	action = vacuum.throttle(1000, function(pos)
     -- update metrics
 		if metric_space_vacuum_abm ~= nil then metric_space_vacuum_abm.inc() end

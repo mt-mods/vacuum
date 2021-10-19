@@ -7,6 +7,7 @@ minetest.register_abm({
 	neighbors = {"vacuum:vacuum"},
 	interval = 1,
 	chance = 1,
+	min_y = vacuum.space_height,
 	action = vacuum.throttle(100, function(pos)
 		if not vacuum.is_pos_in_space(pos) or vacuum.near_powered_airpump(pos) then
 			return

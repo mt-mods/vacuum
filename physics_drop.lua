@@ -29,7 +29,7 @@ end
 
 -- weird nodes in vacuum
 minetest.register_abm({
-        label = "space drop nodes",
+	label = "space drop nodes",
 	nodenames = drop_nodes,
 	neighbors = {"vacuum:vacuum"},
 	interval = 1,
