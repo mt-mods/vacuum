@@ -28,11 +28,12 @@ end
 
 -- depressurize through leaky nodes
 minetest.register_abm({
-        label = "space vacuum depressurize",
+	label = "space vacuum depressurize",
 	nodenames = leaky_nodes,
 	neighbors = {"vacuum:vacuum"},
 	interval = 2,
 	chance = 2,
+	min_y = vacuum.space_height,
 	action = vacuum.throttle(250, function(pos)
 		if metric_space_vacuum_leak_abm ~= nil then metric_space_vacuum_leak_abm.inc() end
 
