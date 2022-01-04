@@ -42,6 +42,9 @@ if minetest.get_modpath("spacesuit") then
 	dofile(MP.."/spacesuit.lua")
 end
 
+if minetest.get_modpath("advtrains") then
+	dofile(MP.."/advtrains.lua")
+end
 
 
 print("[OK] Vacuum")
