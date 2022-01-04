@@ -49,7 +49,7 @@ minetest.register_abm({
 			end
 
 			if node.name == "vacuum:airpump" then
-				-- pump is airthight
+				-- pump is airtight
 				return
 			end
 

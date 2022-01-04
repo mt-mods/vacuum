@@ -6,24 +6,24 @@
 assert(type(advtrains.wagons) == "table", "advtrains sanity check failed!")
 
 -- map of: playername -> bool
-local players_in_airthight_wagons = {}
+local players_in_airtight_wagons = {}
 
 -- map of: wagon_type -> bool
-local airthight_wagon_types = {
+local airtight_wagon_types = {
     ["advtrains:wagon_japan"] = true,
     ["advtrains:engine_japan"] = true
 }
 
 local function collect_seated_players()
     -- go over seats in every wagon
-    players_in_airthight_wagons = {}
+    players_in_airtight_wagons = {}
     for _, wagon in pairs(advtrains.wagons) do
         -- check wagon type
-        if airthight_wagon_types[wagon.type] then
+        if wagon.type and airtight_wagon_types[wagon.type] then
             -- check seats
-            for _, playername in ipairs(wagon.seatp) do
-                -- mark player as seated in aithight wagon
-                players_in_airthight_wagons[playername] = true
+            for _, playername in ipairs(wagon.seatp or {}) do
+                -- mark player as seated in aitight wagon
+                players_in_airtight_wagons[playername] = true
             end
         end
     end
@@ -31,7 +31,7 @@ end
 
 local function check_player(player)
     local playername = player:get_player_name()
-    if players_in_airthight_wagons[playername] then
+    if players_in_airtight_wagons[playername] then
         player:set_breath(10)
     end
 end
