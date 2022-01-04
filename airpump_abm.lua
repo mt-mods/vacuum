@@ -1,7 +1,7 @@
 
 
 minetest.register_abm({
-  label = "airpump",
+	label = "airpump",
 	nodenames = {"vacuum:airpump"},
 	interval = 5,
 	chance = 1,
@@ -54,7 +54,7 @@ minetest.register_abm({
 
 -- initial airpump step
 minetest.register_abm({
-  label = "airpump seed",
+	label = "airpump seed",
 	nodenames = {"vacuum:airpump"},
 	neighbors = {"vacuum:vacuum"},
 	interval = 1,

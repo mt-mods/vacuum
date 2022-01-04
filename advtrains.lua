@@ -1,7 +1,7 @@
 -- disable drowning in certain trains/wagons
 -- Enhancements:
 --  * register/api functions for wagon types
---  * global api for vacuum/drowning overrides (_looks at the spasuit mod_)
+--  * global api for vacuum/drowning overrides (_looks at the spacesuit mod_)
 
 assert(type(advtrains.wagons) == "table", "advtrains sanity check failed!")
 

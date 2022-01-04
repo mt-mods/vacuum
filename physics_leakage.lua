@@ -5,7 +5,7 @@ local has_technic = minetest.get_modpath("technic")
 local metric_space_vacuum_leak_abm
 
 if has_monitoring then
-  metric_space_vacuum_leak_abm = monitoring.counter("vacuum_abm_leak_count", "number of space vacuum leak abm calls")
+	metric_space_vacuum_leak_abm = monitoring.counter("vacuum_abm_leak_count", "number of space vacuum leak abm calls")
 end
 
 -- air leaking nodes
@@ -16,13 +16,13 @@ local leaky_nodes = {
 }
 
 if has_mesecons_random then
-  table.insert(leaky_nodes, "mesecons_random:ghoststone_active")
+	table.insert(leaky_nodes, "mesecons_random:ghoststone_active")
 end
 
 if has_technic then
-  table.insert(leaky_nodes, "technic:lv_cable")
-  table.insert(leaky_nodes, "technic:mv_cable")
-  table.insert(leaky_nodes, "technic:hv_cable")
+	table.insert(leaky_nodes, "technic:lv_cable")
+	table.insert(leaky_nodes, "technic:mv_cable")
+	table.insert(leaky_nodes, "technic:hv_cable")
 end
 
 
@@ -53,12 +53,11 @@ minetest.register_abm({
 				return
 			end
 
-			-- TODO check n nodes down (multiple simple door airlock hack)
 			-- in space: replace air with vacuum
 			local surrounding_node = minetest.find_node_near(pos, 1, {"air"})
 
 			if surrounding_node ~= nil then
-			        if vacuum.debug then
+				if vacuum.debug then
 					-- debug mode, set
 					minetest.set_node(surrounding_node, {name = "default:cobble"})
 				else

@@ -2,7 +2,7 @@
 
 -- plants in vacuum
 minetest.register_abm({
-        label = "space vacuum plants",
+	label = "space vacuum plants",
 	nodenames = {
 		"group:sapling",
 		"group:plant",

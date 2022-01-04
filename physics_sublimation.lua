@@ -2,7 +2,7 @@
 
 -- sublimate nodes in vacuum
 minetest.register_abm({
-  label = "space vacuum sublimate",
+	label = "space vacuum sublimate",
 	nodenames = {"group:snowy", "group:leaves", "group:water"},
 	neighbors = {"vacuum:vacuum"},
 	interval = 1,

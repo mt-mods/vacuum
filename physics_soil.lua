@@ -1,7 +1,7 @@
 
 -- various dirts in vacuum
 minetest.register_abm({
-  label = "space vacuum soil dry",
+	label = "space vacuum soil dry",
 	nodenames = {
 		"default:dirt",
 		"default:dirt_with_grass",
