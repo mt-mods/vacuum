@@ -11,5 +11,6 @@ read_globals = {
 	"VoxelArea",
 
 	-- Deps
-	"default", "monitoring", "advtrains"
+	"default", "monitoring", "advtrains",
+	"unified_inventory",
 }
