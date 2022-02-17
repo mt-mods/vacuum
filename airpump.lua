@@ -130,12 +130,12 @@ minetest.register_node("vacuum:airpump", {
 	end,
 
 	on_receive_fields = function(pos, formname, fields, sender)
-		local meta = minetest.get_meta(pos);
+		local meta = minetest.get_meta(pos)
 
-    if minetest.is_protected(pos, sender:get_player_name()) then
-      -- not allowed
-      return
-    end
+		if minetest.is_protected(pos, sender:get_player_name()) then
+			-- not allowed
+			return
+		end
 
 		if fields.flush then
 			if not vacuum.can_flush_airpump(pos) then
