@@ -54,7 +54,7 @@ minetest.register_chatcommand("test", {
 		local radius = 20
 
 		local t0 = minetest.get_us_time()
-		vacuum.propagate_mapblock(pos, radius)
+		vacuum.propagate_vacuum(pos, radius)
 		local t1 = minetest.get_us_time()
 		local us = t1 - t0
 		return true, "Propagation with radius of " .. radius .. " took " .. us .. " us"
@@ -73,7 +73,7 @@ local directions = {
 	{ x=0, y=0, z=-1 },
 }
 
-function vacuum.propagate_mapblock(center_pos, radius)
+function vacuum.propagate_vacuum(center_pos, radius)
 	local pos1 = vector.subtract(center_pos, radius)
 	local pos2 = vector.add(center_pos, radius)
 
