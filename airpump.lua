@@ -63,6 +63,7 @@ minetest.register_node("vacuum:airpump", {
 	paramtype2 = "facedir",
 	legacy_facedir_simple = true,
 	groups = {cracky=3, oddly_breakable_by_hand=3, tubedevice=1, tubedevice_receiver=1},
+	is_ground_content = false,
 	sounds = default.node_sound_glass_defaults(),
 
 	mesecons = {effector = {
