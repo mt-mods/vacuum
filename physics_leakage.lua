@@ -10,9 +10,9 @@ end
 
 -- air leaking nodes
 local leaky_nodes = {
-	"group:door",
 	"group:soil",
-	"group:pipe", "group:tube"
+	"group:pipe",
+	"group:tube"
 }
 
 if has_mesecons_random then
