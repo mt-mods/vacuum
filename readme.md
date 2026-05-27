@@ -9,7 +9,7 @@ Vacuum implementation and blocks for pumping and detection of vacuum and air
 
 # Operation
 
-The space/vacuum starts at 1000 blocks in the y axis (hardcoded in init.lua)
+The space/vacuum starts at 1000 blocks in the y axis (vacuum.space_height setting)
 
 The mod defines an airlike **vacuum:vacuum** block which suffocates the player (with drowning=1).
 A [spacesuit](https://github.com/mt-mods/spacesuit) or similar would help to survive in space.
